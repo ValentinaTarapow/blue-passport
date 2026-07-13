@@ -1,0 +1,41 @@
+---
+description: Identidad visual Blue Economy School / Blue International — design system obligatorio
+globs: src/**/*.{js,jsx}
+alwaysApply: true
+---
+
+# Blue Economy School — Design System
+
+Fuente de verdad en código: `src/styles/theme.js`, `src/styles/GlobalStyles.js`, `src/styles/shared.js`, `src/components/ui/`.
+
+## Marca
+Profesionalismo ejecutivo, economía azul, elegancia sobria. Tagline: "Navigating the Sustainable Future".
+
+## Colores (solo estos tokens)
+`deepBlue` #1b365d · `ocean` #234876 · `aqua` #3498db · `aquaLight` #5dade2 · `sand` #e8d5b7 · `sandLight` #f5ede0 · `skyLight` #eef8f9 · `offWhite` #fafbfc · `white` · `text` #1a2e3b · `textMuted` #5a7184 · `border` rgba(10,37,64,0.08)
+
+Gradiente marca 135deg: aqua → ocean. Radiales de fondo: rgba(78,205,196,0.12–0.14), rgba(52,152,219,0.10–0.14), rgba(232,213,183,0.15).
+
+## Tipografía
+- Body/UI: **DM Sans** 400–600
+- Headings h1–h4: **Playfair Display** 600–700
+- Hero accent: Playfair italic + gradiente aqua→ocean (`background-clip: text`)
+- Section labels: 0.8125rem, 600, letter-spacing 0.12em, uppercase, color aqua
+
+## Layout
+Container 1200px · padding 1.25rem / 2rem (md) · navbar 5.5rem blanca · secciones 6rem/7rem · breakpoints 768/1024/1100px · radius sm–xl (botones xl) · sombras con rgba(10,37,64,...)
+
+## Componentes
+- **Navbar**: blanco, links textMuted → deepBlue, línea activa 2px aqua
+- **Primary button**: gradiente aqua→ocean, radius xl, sombra teal, hover -1px
+- **Secondary**: deepBlue, hover ocean
+- **Outline**: borde border, hover aqua + rgba(78,205,196,0.06)
+- **Hero**: gradientes + patrón SVG cruces 4% + badge pill teal
+- **Cards**: blanco, borde border, hover translateY(-4px) + shadow md
+- **Footer**: deepBlue, borde superior 3px aqua
+
+## Animaciones
+Reveal: opacity 0→1, translateY(24px→0), 0.7s cubic-bezier(0.4,0,0.2,1). Hover cards -2px a -4px. Botones scale(0.98) active.
+
+## NO hacer
+- Colores fuera de paleta · sans-serif en h1–h3 · sombras negras puras · fondos oscuros en contenido (solo footer) · Inter/Roboto/Poppins · bordes < 0.5rem en cards
