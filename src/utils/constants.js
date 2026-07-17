@@ -6,21 +6,21 @@ export const BRAND = {
 
 export const SITE_NAME = 'The Blue Passport';
 export const SITE_TAGLINE = 'Navigating the Sustainable Future';
-export const HERO_IMAGE = '/assets/blue-passport-logo.png';
+export const HERO_IMAGE = '/assets/blue-passport-hero-logo.png';
 
 export const HOME_IMAGES = {
-  about: '/assets/about-megayacht.png',
+  about: '/assets/about-story-map.jpg',
   serviceCertification: '/assets/service-certification.png',
   serviceConnection: '/assets/service-connection.png',
   serviceLegal: '/assets/service-legal.png',
   serviceTraining: '/assets/service-training.png',
-  whyUs: '/assets/home-why-us-marina.png',
+  whyUs: '/assets/home-why-us-marina.jpg',
   career: '/assets/about-megayacht.png',
 };
 
 export const ABOUT_IMAGES = {
   marina: '/assets/about-marina.png',
-  megayacht: '/assets/about-megayacht.png',
+  megayacht: '/assets/about-story-map.jpg',
 };
 
 export const SITE_DESCRIPTION =
@@ -28,8 +28,9 @@ export const SITE_DESCRIPTION =
 
 export const NAV_LINKS = [
   { path: '/', end: true },
+  { path: '/professionals', featured: true },
   { path: '/about' },
-  { path: '/professionals' },
+  { path: '/faq' },
   { path: '/contact' },
 ];
 
@@ -41,7 +42,7 @@ export const BLUE_PASSPORT_PAYMENT_URL =
 export const LIST_WITH_US_URL = BLUE_PASSPORT_URL;
 
 export const CONTACT_EMAIL =
-  import.meta.env.VITE_CONTACT_EMAIL || 'info@thebluepassport.org';
+  import.meta.env.VITE_CONTACT_EMAIL || 'pagos@thebluepassport.es';
 
 export const CONTACT_PHONE = '+34 633378032';
 export const CONTACT_PHONE_HREF = 'tel:+34633378032';

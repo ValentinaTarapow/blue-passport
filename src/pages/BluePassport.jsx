@@ -25,8 +25,7 @@ import {
   CheckoutCard,
   CheckoutLabel,
   CheckoutTitle,
-  Price,
-  PriceNote,
+  CheckoutSubtitle,
   CheckoutActions,
   SecureNote,
 } from './BluePassport.styles';
@@ -76,13 +75,12 @@ export default function BluePassport() {
               <CheckoutCard>
                 <CheckoutLabel>{p.checkout.label}</CheckoutLabel>
                 <CheckoutTitle>{p.checkout.title}</CheckoutTitle>
-                <Price>{p.checkout.price}</Price>
-                <PriceNote>{p.checkout.priceNote}</PriceNote>
+                <CheckoutSubtitle>{p.checkout.subtitle}</CheckoutSubtitle>
                 <CheckoutActions>
-                  <Button to="/blue-passport/become-a-member" variant="primary" size="lg">
+                  <Button to="/blue-passport/become-a-member" variant="primary" size="md">
                     {p.checkout.applyCta}
                   </Button>
-                  <Button to="/contact" variant="outline" size="lg">
+                  <Button to="/contact" variant="outline" size="md">
                     {p.checkout.questionsCta}
                   </Button>
                 </CheckoutActions>

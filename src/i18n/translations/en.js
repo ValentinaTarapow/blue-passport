@@ -11,6 +11,7 @@ export const en = {
     home: 'Home',
     about: 'About Us',
     professionals: 'Professionals',
+    faq: 'FAQ',
     contact: 'Contact',
     cta: {
       searchProfessionals: 'Find Professionals',
@@ -26,16 +27,13 @@ export const en = {
   },
   home: {
     hero: {
-      eyebrow: 'Welcome to The Blue Passport',
-      title: 'The New Blue Gateway to',
-      titleAccent: 'Nautical and Maritime Excellence',
-      quote:
-        'The directory where the best professionals showcase their services and yacht owners find trusted providers.',
+      title: 'The Blue Passport',
+      quote: 'The gateway passport to the nautical ecosystem',
       subtitle:
-        'Connecting talent with the most exclusive ports. The ecosystem where captains and yacht owners access a network of certified professionals for the care of their vessel and crew.',
+        'The Blue Passport is more than a directory: it is the gateway to the most exclusive maritime ecosystem. Here, yacht owners find the elite of the sector and professionals obtain the recognition their career deserves.',
       imageAlt: 'The Blue Passport logo',
       primaryCta: 'Explore Professionals',
-      secondaryCta: 'About Us',
+      secondaryCta: 'Advertise With Us',
     },
     stats: [
       { value: '20+', label: 'Years of experience' },
@@ -49,7 +47,7 @@ export const en = {
       mission:
         'Our mission is to transform the nautical industry through certification and female leadership using advanced technology.',
       readMore: 'Read more',
-      imageAlt: 'Detailed view of coiled nautical rope against a sparkling sea backdrop',
+      imageAlt: 'Stylized world map with glowing connection lines across continents',
     },
     services: {
       items: [
@@ -82,7 +80,7 @@ export const en = {
     whyUs: {
       eyebrow: 'Our Proposal',
       title: 'Why Choose Us',
-      imageAlt: 'Large luxury yachts docked at a city marina with skyscrapers in the background',
+      imageAlt: 'Luxury yachts docked at a lit city marina at night',
       items: [
         {
           number: '01',
@@ -151,7 +149,11 @@ export const en = {
     contact: 'Contact',
     email: 'Email',
     phone: 'Phone',
+    whatsapp: 'WhatsApp',
     web: 'Web',
+    linkedin: 'LinkedIn',
+    social: 'Social',
+    address: 'Address',
   },
   about: {
     meta: {
@@ -167,10 +169,6 @@ export const en = {
       exploreCta: 'Explore more',
       imageAlt: 'Large luxury yachts docked at a city marina with skyscrapers in the background',
     },
-    mission: {
-      label: 'Our mission',
-      quote: 'Leading Excellence in the Blue Economy',
-    },
     blueEconomy: {
       title: 'What is the Blue Economy?',
       text: 'Inspired by Gunter Pauli\'s vision, we understand the Blue Economy as the model where innovation and nature work together. It goes beyond sustainability: being ultra-efficient, creating value from what the sea offers, and ensuring the nautical business is an engine of regeneration for the ocean and society.',
@@ -181,14 +179,14 @@ export const en = {
       text: 'The Blue Certificate is our transformation tool. Through Blockchain technology and Artificial Intelligence, we certify that every professional and company in our network meets strict criteria of safety, ethics and technical capability. It is the digital tool that ensures truth at sea.',
     },
     newBlueGate: {
-      eyebrow: 'New Blue Gate (The Platform)',
-      title: 'The Blue Gateway to the nautical ecosystem',
-      text: 'New Blue Gate is more than a directory — it is the Blue Gateway to the most exclusive maritime ecosystem. Here, yacht owners find the elite of the sector, and professionals find the recognition their career deserves.',
+      eyebrow: 'The Blue Passport',
+      title: 'The gateway passport to the nautical ecosystem',
+      text: 'The Blue Passport is more than a directory: it is the gateway to the most exclusive maritime ecosystem. Here, yacht owners find the elite of the sector and professionals obtain the recognition their career deserves.',
     },
     megayacht: {
       title: 'The Megayacht Standard: Talent and Protocol',
       text: 'From engineers and skippers to chefs and wellness specialists: we connect the most complete crew in the sector, guaranteeing specific training in luxury protocol so that even those starting out can reach the excellence standard required on board.',
-      imageAlt: 'Megayacht crew excellence and luxury protocol standards',
+      imageAlt: 'Stylized world map with glowing connection lines across continents',
     },
   },
   contact: {
@@ -215,6 +213,9 @@ export const en = {
       message: 'Message',
     },
     submit: 'Send',
+    sending: 'Sending…',
+    success: 'Message sent. We will get back to you soon.',
+    error: 'Could not send the message. Please try again or email pagos@thebluepassport.es.',
     mailSubject: 'Inquiry from The Blue Passport',
   },
   bluePassport: {
@@ -230,7 +231,7 @@ export const en = {
     },
     offer: {
       title: 'Your gateway to the premium nautical sector',
-      text: 'The Blue Passport is the professional membership that positions you before captains, yacht owners, and companies seeking certified, trusted talent.',
+      text: 'The Blue Passport connects technical excellence with the luxury nautical standard. Three membership categories — Blue Crew, Blue Expert and Blue Certified Partner — validate that every professional meets the highest quality and ethics standards in the sector.',
     },
     features: [
       {
@@ -257,8 +258,9 @@ export const en = {
     checkout: {
       label: 'Buy now',
       title: 'Professional Blue Passport',
-      price: 'from €50/year',
-      priceNote: '€50/year with protocol · €150/year with Elite Yacht Protocol · €25/year partners',
+      subtitle: 'Choose Blue Crew, Blue Expert or Blue Certified Partner — annual memberships tailored to your background.',
+      price: '€150/year',
+      priceNote: 'Blue Crew · Blue Expert — €150/year · Blue Certified Partner — €50/year',
       buyCta: 'Buy Blue Passport',
       applyCta: 'Become a member',
       contactCta: 'Request purchase',
@@ -273,11 +275,11 @@ export const en = {
       done: 'Done',
     },
     reviewNote:
-      'Our team manually reviews every application before publishing your listing in the directory.',
+      'Our team manually reviews every application within 7 days. You are only charged once your profile is approved and published.',
     apply: {
       eyebrow: 'Application',
       title: 'Tell us about your practice',
-      lead: 'Complete your application and proceed to secure payment. Choose your fee based on your protocol accreditation.',
+      lead: 'Complete your application and proceed to secure payment. Choose Blue Crew (onboard experience), Blue Expert (technical / protocol), or Blue Certified Partner (valid Blue Certificate).',
       fields: {
         fullName: 'Full name',
         company: 'Company (optional)',
@@ -329,67 +331,58 @@ export const en = {
         title: 'Your fee',
         payLabel: 'You will pay',
         period: '/ year',
-        referenceIntro: 'Only one fee applies to your case. Reference:',
+        referenceIntro: 'Choose the category that matches your background. Reference:',
         referenceItems: [
-          'With protocol: €50/year (listing only)',
-          'Without protocol: €150/year — total covering listing + Elite Yacht Protocol',
-          'Partner with protocol: €25/year',
-          'Partner without protocol: €125/year — total covering partner listing + Elite Yacht Protocol',
+          'Blue Crew Member: €150/year — directory (€50) + Validación Blue (€100)',
+          'Blue Expert Member: €150/year — directory (€50) + Elite Yacht Protocol (€100)',
+          'Blue Certified Partner: €50/year — directory only (Blue Certificate holders; validation fees waived)',
         ],
         summaries: {
-          annual_protocol: {
-            total: '€50',
-            singlePaymentNote: 'One annual payment.',
-            includes: ['Directory listing'],
-          },
-          annual_protocol_course: {
+          crew: {
             total: '€150',
             singlePaymentNote: 'One annual payment. Everything included in this amount.',
-            includes: ['Directory listing', 'Elite Yacht Protocol course'],
+            includes: ['Directory listing', 'Validación Blue'],
             referenceNote:
-              '€150 is the total. It covers €50 listing + €100 Elite Yacht Protocol.',
+              '€150 is the total. It covers €50 annual directory fee + €100 credential validation fee.',
           },
-          partner_protocol: {
-            total: '€25',
-            singlePaymentNote: 'One annual payment (partner rate).',
-            includes: ['Directory listing'],
-          },
-          partner_protocol_course: {
-            total: '€125',
-            singlePaymentNote: 'One annual payment (partner rate). Everything included in this amount.',
-            includes: ['Directory listing', 'Elite Yacht Protocol course'],
+          expert: {
+            total: '€150',
+            singlePaymentNote: 'One annual payment. Everything included in this amount.',
+            includes: ['Directory listing', 'Elite Yacht Protocol certification'],
             referenceNote:
-              '€125 is the total. It covers €25 partner listing + €100 Elite Yacht Protocol.',
+              '€150 is the total. It covers €50 annual directory fee + €100 Elite Yacht Protocol certification.',
+          },
+          partner: {
+            total: '€50',
+            singlePaymentNote: 'One annual payment for directory profile management.',
+            includes: ['Directory listing', 'Blue Certified Partner badge'],
+            referenceNote:
+              '€50 annual directory fee. Credential validation fees are waived for valid Blue Certificate holders.',
           },
         },
       },
       plans: {
-        annual_protocol: {
-          name: 'Annual listing',
-          description: 'Directory listing. You already have protocol training.',
-          price: '€50 / year',
-        },
-        annual_protocol_course: {
-          name: 'Listing + Elite Yacht Protocol',
-          description: '€150/year all included (listing + Elite Yacht Protocol).',
+        crew: {
+          name: 'Blue Crew Member',
+          description: 'Onboard experience. Featured profile and Validación Blue.',
           price: '€150 / year',
         },
-        partner_protocol: {
-          name: 'Partner listing',
-          description: 'Partner rate with protocol accreditation.',
-          price: '€25 / year',
+        expert: {
+          name: 'Blue Expert Member',
+          description: 'Technical / protocol experience. Featured profile and Elite Yacht Protocol.',
+          price: '€150 / year',
         },
-        partner_protocol_course: {
-          name: 'Partner + Elite Yacht Protocol',
-          description: '€125/year all included (partner listing + Elite Yacht Protocol).',
-          price: '€125 / year',
+        partner: {
+          name: 'Blue Certified Partner',
+          description: 'Valid Blue Certificate holders. Featured profile and partner badge.',
+          price: '€50 / year',
         },
       },
       discountCodeLabel: 'Partner code (optional)',
-      discountCodeHint: 'If you are part of our partner network, enter your code to unlock the discounted rate.',
+      discountCodeHint: 'Optional field. It no longer changes the membership fee.',
       discountCodePlaceholder: 'e.g. BLUEPARTNER',
       discountCodeInvalid: 'Invalid code. Contact us if you believe you should have access.',
-      partnerCodeApplied: 'Partner rate applied (code {code}).',
+      partnerCodeApplied: 'Partner code registered ({code}).',
       submit: 'Pay with Stripe',
       missingLink: 'The payment link is not configured.',
       missingLinkCta: 'Contact us to pay',
@@ -443,50 +436,94 @@ export const en = {
     member: {
       eyebrow: 'Become a member',
       title: 'Join The Blue Passport',
-      lead: 'Tell us about your practice, choose your membership plan, and continue to secure payment.',
+      lead: 'Three membership categories to validate nautical excellence. Choose the one that matches your background and continue to secure payment.',
       fields: {
         fullName: 'Full name',
         email: 'Email',
-        company: 'Company',
-        category: 'Category',
-        country: 'Country',
+        nationality: 'Nationality',
       },
-      planTitle: 'Select your plan',
+      nationalityPlaceholder: 'Select your nationality',
+      planTitle: 'Select your category',
       plans: {
-        standard: {
-          name: 'Membership',
+        crew: {
+          name: 'Blue Crew Member',
+          subtitle: 'Onboard experience',
           description:
-            'Annual membership for certified professionals already holding the Elite Yacht Protocol certification.',
-          price: '€50 / year',
+            'For professionals with proven operational experience in the megayacht sector (captains, crew, chefs, surveyors, and others).',
+          includes: [
+            {
+              title: 'Featured profile',
+              text: 'in our global directory',
+            },
+            {
+              title: 'Validación Blue',
+              text: 'certifies your experience and formal commitment to our Code of Ethics',
+            },
+          ],
+          breakdown: 'Investment: €50 annual directory fee + €100 credential validation fee.',
+          price: '€150 / year',
         },
-        standard_course: {
-          name: 'Membership + Course',
-          description: 'Annual membership including the Elite Yacht Protocol training.',
+        expert: {
+          name: 'Blue Expert Member',
+          subtitle: 'Technical experience / Protocol',
+          description:
+            'For excellence professionals in technical, legal or service fields (lawyers, consultants, advisors) who, without onboard experience, wish to provide services in the megayacht ecosystem.',
+          includes: [
+            {
+              title: 'Featured profile',
+              text: 'in our global directory',
+            },
+            {
+              title: 'Elite Yacht Protocol',
+              text: 'mandatory course that aligns your technical service with etiquette and operations protocols of the superyacht sector',
+            },
+          ],
+          breakdown: 'Investment: €50 annual directory fee + €100 Elite Yacht Protocol technical certification.',
           price: '€150 / year',
         },
         partner: {
-          name: 'Partner',
-          description: 'Discounted annual membership for approved partners.',
-          price: '€25 / year',
-        },
-        partner_course: {
-          name: 'Partner + Course',
+          name: 'Blue Certified Partner',
+          subtitle: 'Valid Blue Certificate',
           description:
-            'Discounted annual membership including the Elite Yacht Protocol training.',
-          price: '€125 / year',
+            'Reserved exclusively for professionals and companies that already hold a valid Blue Certificate. It recognizes prior compliance with our sustainability and technical quality standards, with simplified direct access to the directory.',
+          includes: [
+            {
+              title: 'Featured profile',
+              text: 'in our global directory',
+            },
+            {
+              title: 'Blue Certified Partner badge',
+              text: 'distinctive seal for Blue Certificate holders',
+            },
+            {
+              title: 'Validation fee waiver',
+              text: 'credential validation fees are waived — you have already been evaluated under the Blue Certificate standard',
+            },
+          ],
+          breakdown: 'Investment: €50 single annual maintenance fee for directory profile management.',
+          price: '€50 / year',
         },
       },
       submit: 'Continue to Payment',
       submitting: 'Redirecting to Stripe…',
       back: 'Back to overview',
-      note: 'You will link your card with a 7-day evaluation period at no charge. You will complete your full profile afterwards.',
-      requiredError: 'Please complete all required fields.',
+      note: 'Your card is linked securely with no charge today. Our team reviews every application within 7 days — you are only charged once your profile is approved and published. You will complete your full profile afterwards.',
+      reviewConsent:
+        'I understand that The Blue Passport team will carefully review and validate my profile within 7 days before publishing it, in order to protect the quality, trust, and professionalism of the directory. I will only be charged if my profile is approved.',
+      requiredError: 'Please complete all required fields and accept the profile review.',
+      errors: {
+        fullName: 'Enter your full name.',
+        email: 'Enter a valid email address.',
+        nationality: 'Select your nationality.',
+        plan: 'Please select one option to continue.',
+        consent: 'You must accept the profile review to continue.',
+      },
       checkoutError: 'Could not start checkout. Please try again.',
     },
     payment: {
       success: {
-        title: 'Subscription registered',
-        lead: 'Your card is linked with a 7-day evaluation period. Complete your profile so our team can review it.',
+        title: 'Card linked — no charge yet',
+        lead: 'Your card is securely linked with no charge today. Complete your profile so our team can review it within 7 days. You are only charged if your listing is approved and published.',
         profileCta: 'Complete your profile',
         homeCta: 'Back to Blue Passport',
         loading: 'Confirming your subscription…',
@@ -545,7 +582,7 @@ export const en = {
       documentsReadError: 'Could not read the file. Please try again.',
       submit: 'Submit profile',
       submitting: 'Submitting…',
-      note: 'Your listing will be submitted as pending review. If approved, the annual membership will be charged.',
+      note: 'Your listing will be submitted as pending review. Our team has up to 7 days to approve or decline it. You are only charged if it is approved and published — if declined or the review window expires, there is no charge.',
       requiredError: 'Please complete all required fields.',
       submitError: 'Could not submit your profile. Please try again.',
       missingApplication: 'Missing application reference. Start from Become a Member.',
@@ -553,9 +590,130 @@ export const en = {
       loading: 'Loading your application…',
       backCta: 'Become a member',
       successTitle: 'Profile submitted',
-      successLead: 'Thank you. Our team will review your listing before publishing it.',
-      draftNote: 'Directorist listing created as pending (ID {id}). If you approve it, Stripe will charge the annual membership.',
+      successLead:
+        'Thank you. Our team will review your listing within 7 days. You will only be charged if it is approved and published.',
+      draftNote:
+        'Directorist listing created as pending (ID {id}). Charge happens only on approval; auto-declined after 7 days with no charge.',
       homeCta: 'Back to Blue Passport',
     },
+  },
+  faq: {
+    meta: {
+      title: 'FAQ | Advertise on The Blue Passport',
+      description:
+        'Answers about advertising your professional profile, billing, the 7-day review, and Blue Passport plans.',
+    },
+    eyebrow: 'Frequently asked questions',
+    title: 'Want to advertise in the directory?',
+    lead: 'Everything you need to know before listing your professional profile on The Blue Passport.',
+    items: [
+      {
+        id: 'what',
+        question: 'What does advertising with The Blue Passport mean?',
+        answer: [
+          'It means publishing your professional profile in our directory of nautical and maritime excellence. Captains, yacht owners and companies can find you by specialty and location.',
+          'Your listing includes photo, biography, contact details and the Blue Certificate Holder badge when your membership is active.',
+        ],
+      },
+      {
+        id: 'steps',
+        question: 'How does registration work?',
+        answer: [
+          'The process is simple:',
+        ],
+        list: [
+          'Choose your category (Blue Crew, Blue Expert or Blue Certified Partner) and save your card details in Stripe (€0 charged at that moment).',
+          'Complete your professional profile (photo, bio, specialties, contact).',
+          'Your listing stays pending review.',
+          'Our team reviews your application (up to 7 days).',
+          'If you are approved and payment is confirmed, your profile is published in the directory.',
+        ],
+      },
+      {
+        id: 'charge-register',
+        question: 'Am I charged when I register?',
+        answer: [
+          'No. When you register you only link your card. The charge at that moment is €0.',
+          'You are only charged the annual membership if your profile is approved and payment is confirmed successfully.',
+        ],
+      },
+      {
+        id: 'when-charged',
+        question: 'When am I actually charged?',
+        answer: [
+          'When our team approves your application and Stripe confirms the annual plan charge.',
+          'If payment cannot be completed (for example, insufficient funds), your profile is not published and stays pending until it is resolved.',
+        ],
+      },
+      {
+        id: 'rejected',
+        question: 'What if my application is declined?',
+        answer: [
+          'There is no charge and your profile is not published in the directory.',
+          'There may also be an automatic decline if 7 days pass without a decision — in that case there is also no charge.',
+        ],
+      },
+      {
+        id: 'review',
+        question: 'How long does the review take?',
+        answer: [
+          'Up to 7 days. During that time your profile is not public.',
+          'It is only published after approval and confirmed payment.',
+        ],
+      },
+      {
+        id: 'visible',
+        question: 'When does my profile appear in the directory?',
+        answer: [
+          'When the application is approved and payment is confirmed. While it is pending, it is not visible to the public.',
+        ],
+      },
+      {
+        id: 'plans',
+        question: 'What plans are available and how much do they cost?',
+        answer: [
+          'Annual membership categories are:',
+          'These categories are part of the AIEA ecosystem and are distinct from Blue Professional (Élite) certifications.',
+        ],
+        list: [
+          'Blue Crew Member: €150 / year (€50 directory + €100 Validación Blue)',
+          'Blue Expert Member: €150 / year (€50 directory + €100 Elite Yacht Protocol)',
+          'Blue Certified Partner: €50 / year (directory only — valid Blue Certificate holders)',
+        ],
+      },
+      {
+        id: 'need',
+        question: 'What do I need to apply?',
+        answer: [
+          'Full name, email, nationality, category (Crew, Expert or Certified Partner) and review consent.',
+          'After registration: profile photo, biography, specialties and contact details. Accreditation documents if applicable.',
+        ],
+      },
+      {
+        id: 'trial',
+        question: 'Why does Stripe mention a “trial period”?',
+        answer: [
+          'It is the technical way to link your card without charging while we review your profile (up to 7 days).',
+          'It is not a permanent free service: it is the review window. The real charge happens only if you are approved.',
+        ],
+      },
+    ],
+    cta: {
+      title: 'Ready to advertise your profile',
+      text: 'Start your application now. Nothing is charged until your profile is approved.',
+      primary: 'Become a member',
+      secondary: 'Contact us',
+    },
+  },
+  notFound: {
+    meta: {
+      title: 'Page not found | The Blue Passport',
+      description: 'This page does not exist. Return home or browse the professional directory.',
+    },
+    eyebrow: 'Off course',
+    title: 'This page drifted away',
+    lead: 'The route you followed is not on our chart. Head back home or explore the directory of blue economy professionals.',
+    homeCta: 'Back home',
+    directoryCta: 'Browse professionals',
   },
 };

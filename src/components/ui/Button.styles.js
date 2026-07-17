@@ -50,6 +50,43 @@ const variantStyles = {
       background-color: rgba(78, 205, 196, 0.06);
     }
   `,
+  gradientOutline: css`
+    position: relative;
+    color: ${({ theme }) => theme.colors.ocean};
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    box-shadow: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: linear-gradient(
+        135deg,
+        ${({ theme }) => theme.colors.aqua} 0%,
+        ${({ theme }) => theme.colors.ocean} 55%,
+        ${({ theme }) => theme.colors.deepBlue} 100%
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.ocean};
+      background-color: rgba(78, 205, 196, 0.14);
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  `,
   ghost: css`
     background-color: transparent;
     color: ${({ theme }) => theme.colors.deepBlue};

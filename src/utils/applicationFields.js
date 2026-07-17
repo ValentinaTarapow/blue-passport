@@ -35,7 +35,7 @@ export const EMPTY_APPLICATION = {
   location: '',
   shortDescription: '',
   hasProtocolTraining: false,
-  planId: 'annual_protocol',
+  planId: 'crew',
   partnerCode: '',
   profileImage: null,
   accreditationDocuments: [],

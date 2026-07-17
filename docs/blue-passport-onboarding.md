@@ -1,5 +1,10 @@
 # Blue Passport — onboarding
 
+> **Actualización:** la API Node (`blue-passport-api`) fue reemplazada por el plugin de WordPress
+> [`docs/wordpress-plugin/blue-passport-api.php`](./wordpress-plugin/blue-passport-api.php).
+> Instalación: [`docs/wordpress-plugin/INSTALAR.md`](./wordpress-plugin/INSTALAR.md).
+> El front apunta a `VITE_API_URL=https://thebluepassport.org/wp-json/blue-passport/v1`.
+
 Arquitectura detallada en [`docs/stripe.md`](./stripe.md).
 
 ```
@@ -53,10 +58,9 @@ Stripe     WordPress / Directorist
 
 | ID | Tarifa |
 |----|--------|
-| `standard` | 50 €/año — con protocolo |
-| `standard_course` | 150 €/año — con curso Elite Yacht Protocol |
-| `partner` | 25 €/año — partner con protocolo |
-| `partner_course` | 125 €/año — partner + curso |
+| `crew` | 150 €/año — Blue Crew Member (directorio + Validación Blue) |
+| `expert` | 150 €/año — Blue Expert Member (directorio + Elite Yacht Protocol) |
+| `partner` | 50 €/año — Blue Certified Partner (solo directorio; Blue Certificate vigente) |
 
 ## Configuración
 
@@ -65,10 +69,9 @@ Stripe     WordPress / Directorist
 ```env
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_TRIAL_DAYS=7
-STRIPE_PRICE_STANDARD=price_...
-STRIPE_PRICE_STANDARD_COURSE=price_...
+STRIPE_PRICE_CREW=price_...
+STRIPE_PRICE_EXPERT=price_...
 STRIPE_PRICE_PARTNER=price_...
-STRIPE_PRICE_PARTNER_COURSE=price_...
 SUCCESS_URL=https://thebluepassport.org/payment/success
 CANCEL_URL=https://thebluepassport.org/payment/cancel
 WP_USERNAME=...

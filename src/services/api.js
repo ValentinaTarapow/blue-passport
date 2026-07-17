@@ -12,7 +12,9 @@ async function apiFetch(path, options = {}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const error = new Error(data.error || `API request failed (${response.status})`);
+    const error = new Error(
+      data.message || data.error || `API request failed (${response.status})`,
+    );
     error.status = response.status;
     throw error;
   }
@@ -45,5 +47,12 @@ export function submitProfile(applicationId, profile) {
 export function publishDirectoristDraft(applicationId) {
   return apiFetch(`/applications/${applicationId}/publish-draft`, {
     method: 'POST',
+  });
+}
+
+export function submitContact(payload) {
+  return apiFetch('/contact', {
+    method: 'POST',
+    body: JSON.stringify(payload),
   });
 }

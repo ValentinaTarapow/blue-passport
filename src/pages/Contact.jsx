@@ -3,6 +3,7 @@ import Button from '../components/ui/Button';
 import SocialIcon from '../components/ui/SocialIcon';
 import PageTransition from '../components/PageTransition';
 import { useTranslation } from '../i18n/LanguageContext';
+import { submitContact } from '../services/api';
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
@@ -42,6 +43,20 @@ import {
   Textarea,
   SubmitWrap,
 } from './Contact.styles';
+import styled from 'styled-components';
+
+const FormStatus = styled.p`
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background: ${({ $tone, theme }) =>
+    $tone === 'error' ? 'rgba(231, 76, 60, 0.08)' : 'rgba(52, 152, 219, 0.08)'};
+  border: 1px solid
+    ${({ $tone }) => ($tone === 'error' ? 'rgba(231, 76, 60, 0.25)' : 'rgba(52, 152, 219, 0.22)')};
+  color: ${({ $tone, theme }) => ($tone === 'error' ? theme.colors.error : theme.colors.ocean)};
+`;
 
 const INITIAL_FORM = {
   firstName: '',
@@ -54,6 +69,8 @@ export default function Contact() {
   const { t } = useTranslation();
   const c = t.contact;
   const [form, setForm] = useState(INITIAL_FORM);
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
     document.title = c.meta.title;
@@ -65,23 +82,25 @@ export default function Contact() {
     setForm((current) => ({ ...current, [field]: event.target.value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setStatus(null);
+    setSubmitting(true);
 
-    const body = [
-      `${c.fields.firstName}: ${form.firstName}`,
-      `${c.fields.lastName}: ${form.lastName}`,
-      `${c.fields.email}: ${form.email}`,
-      '',
-      form.message,
-    ].join('\n');
-
-    const params = new URLSearchParams({
-      subject: c.mailSubject,
-      body,
-    });
-
-    window.location.href = `mailto:${CONTACT_EMAIL}?${params.toString()}`;
+    try {
+      await submitContact({
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim(),
+        message: form.message.trim(),
+      });
+      setForm(INITIAL_FORM);
+      setStatus({ tone: 'success', message: c.success });
+    } catch {
+      setStatus({ tone: 'error', message: c.error });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -149,6 +168,7 @@ export default function Contact() {
 
                 <FormPanel>
                   <FormIntro>{c.formIntro}</FormIntro>
+                  {status && <FormStatus $tone={status.tone}>{status.message}</FormStatus>}
                   <Form onSubmit={handleSubmit}>
                     <FieldRow>
                       <FieldGroup>
@@ -163,6 +183,7 @@ export default function Contact() {
                           autoComplete="given-name"
                           value={form.firstName}
                           onChange={updateField('firstName')}
+                          disabled={submitting}
                         />
                       </FieldGroup>
                       <FieldGroup>
@@ -177,6 +198,7 @@ export default function Contact() {
                           autoComplete="family-name"
                           value={form.lastName}
                           onChange={updateField('lastName')}
+                          disabled={submitting}
                         />
                       </FieldGroup>
                     </FieldRow>
@@ -193,6 +215,7 @@ export default function Contact() {
                         autoComplete="email"
                         value={form.email}
                         onChange={updateField('email')}
+                        disabled={submitting}
                       />
                     </FieldGroup>
 
@@ -206,12 +229,13 @@ export default function Contact() {
                         required
                         value={form.message}
                         onChange={updateField('message')}
+                        disabled={submitting}
                       />
                     </FieldGroup>
 
                     <SubmitWrap>
-                      <Button type="submit" variant="primary" size="lg">
-                        {c.submit}
+                      <Button type="submit" variant="primary" size="lg" disabled={submitting}>
+                        {submitting ? c.sending : c.submit}
                       </Button>
                     </SubmitWrap>
                   </Form>

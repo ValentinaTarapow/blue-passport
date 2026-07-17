@@ -55,23 +55,23 @@ contraseñas de admin en el frontend:
 
 El cliente debe crear su cuenta en Stripe y configurar:
 
-### A. Productos y precios recurrentes (4 planes)
+### A. Productos y precios recurrentes (3 planes)
 
-| Plan API | Producto Stripe | Price ID (test) | Tarifa |
-|----------|-----------------|-----------------|--------|
-| `standard` | `prod_Ur63zyXQAKW2Bw` — Annual Membership | `price_1TrNrl5HnR7XAaVysJS91KXy` | 50 €/año |
-| `standard_course` | `prod_Ur63p6sPWQAa6M` — Annual + Protocol | `price_1TrNrn5HnR7XAaVym2OiQySn` | 150 €/año |
-| `partner` | `prod_Ur63DGLJnvPgB3` — Partner Membership | `price_1TrNrp5HnR7XAaVy5cIa7yaw` | 25 €/año |
-| `partner_course` | `prod_Ur63ixYMdMYCkD` — Partner + Protocol | `price_1TrNrr5HnR7XAaVyWusdIrqA` | 125 €/año |
+| Plan API | Producto Stripe | Price ID | Tarifa |
+|----------|-----------------|----------|--------|
+| `crew` | Blue Crew Member | `price_1TuH9U4liFjrlSo91IMKSCI7` | 150 €/año |
+| `expert` | Blue Expert Member | `price_1TuHBZ4liFjrlSo9oj6EAIf6` | 150 €/año |
+| `partner` | Blue Certified Partner | `price_1TuIpe4liFjrlSo9OU6ZihxR` | 50 €/año |
 
-Variables en `blue-passport-api/.env`:
+Crew y Expert incluyen 50 € de cuota anual de directorio + 100 € de validación (Crew) o certificación Elite Yacht Protocol (Expert). Partner es solo la cuota de directorio (50 €) para titulares de Blue Certificate vigente.
 
-| Variable | Plan |
-|----------|------|
-| `STRIPE_PRICE_STANDARD` | 50 €/año |
-| `STRIPE_PRICE_STANDARD_COURSE` | 150 €/año |
-| `STRIPE_PRICE_PARTNER` | 25 €/año |
-| `STRIPE_PRICE_PARTNER_COURSE` | 125 €/año |
+Variables en `wp-config.php` (plugin WordPress):
+
+| Variable | Price ID |
+|----------|----------|
+| `BLUE_PASSPORT_STRIPE_PRICE_CREW` | `price_1TuH9U4liFjrlSo91IMKSCI7` |
+| `BLUE_PASSPORT_STRIPE_PRICE_EXPERT` | `price_1TuHBZ4liFjrlSo9oj6EAIf6` |
+| `BLUE_PASSPORT_STRIPE_PRICE_PARTNER` | `price_1TuIpe4liFjrlSo9OU6ZihxR` |
 
 Cada variable debe contener un **Price ID** (`price_...`), no un Product ID (`prod_...`).
 

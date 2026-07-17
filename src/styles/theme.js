@@ -94,8 +94,10 @@ export const sectionGradient = `
 `;
 
 export const skySectionGradient = `
-  linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(238, 248, 249, 0.75) 10%, transparent 26%),
-  radial-gradient(ellipse 75% 55% at 75% 15%, rgba(78, 205, 196, 0.14) 0%, transparent 60%),
-  radial-gradient(ellipse 55% 45% at 15% 85%, rgba(52, 152, 219, 0.1) 0%, transparent 55%),
-  #eef8f9
+  linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(238, 248, 249, 0.7) 10%, transparent 26%),
+  radial-gradient(ellipse 80% 60% at 82% 8%, rgba(27, 54, 93, 0.16) 0%, transparent 58%),
+  radial-gradient(ellipse 70% 55% at 12% 92%, rgba(35, 72, 118, 0.18) 0%, transparent 55%),
+  radial-gradient(ellipse 55% 45% at 70% 70%, rgba(52, 152, 219, 0.14) 0%, transparent 60%),
+  radial-gradient(ellipse 50% 40% at 28% 20%, rgba(78, 205, 196, 0.12) 0%, transparent 55%),
+  #e8f2f5
 `;

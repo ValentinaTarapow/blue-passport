@@ -1,19 +1,15 @@
 export const CHECKOUT_PLANS = [
   {
-    id: 'standard',
-    price: '€50 / year',
+    id: 'crew',
+    price: '€150 / year',
   },
   {
-    id: 'standard_course',
+    id: 'expert',
     price: '€150 / year',
   },
   {
     id: 'partner',
-    price: '€25 / year',
-  },
-  {
-    id: 'partner_course',
-    price: '€125 / year',
+    price: '€50 / year',
   },
 ];
 

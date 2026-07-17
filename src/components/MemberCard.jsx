@@ -1,35 +1,53 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import SocialIcon from './ui/SocialIcon';
 import { useTranslation } from '../i18n/LanguageContext';
 import { truncate } from '../utils/helpers';
 import { media } from '../styles/theme';
 
-const Card = styled(motion.article)`
+const Card = styled(motion(Link))`
   display: flex;
-  flex-direction: column;
+  gap: 0.875rem;
+  align-items: flex-start;
   height: 100%;
+  padding: 0.875rem;
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  overflow: hidden;
+  border-radius: ${({ theme }) => theme.radius.md};
   box-shadow: ${({ theme }) => theme.shadows.sm};
+  text-decoration: none;
+  color: inherit;
   transition:
     transform ${({ theme }) => theme.transition},
-    box-shadow ${({ theme }) => theme.transition};
+    box-shadow ${({ theme }) => theme.transition},
+    border-color ${({ theme }) => theme.transition};
 
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: ${({ theme }) => theme.shadows.md};
+    border-color: rgba(52, 152, 219, 0.22);
+  }
+
+  ${media.md} {
+    padding: 1rem;
+    gap: 1rem;
   }
 `;
 
-const ImageWrapper = styled.div`
-  position: relative;
+const Photo = styled.div`
   flex-shrink: 0;
-  aspect-ratio: 4 / 3;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.skyLight};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+
+  ${media.md} {
+    width: 72px;
+    height: 72px;
+  }
 `;
 
 const Image = styled.img`
@@ -37,11 +55,6 @@ const Image = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  transition: transform 0.5s ease;
-
-  ${Card}:hover & {
-    transform: scale(1.04);
-  }
 `;
 
 const Placeholder = styled.div`
@@ -50,136 +63,178 @@ const Placeholder = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: 2.5rem;
-  opacity: 0.2;
-`;
-
-const ImageCurve = styled.div`
-  position: absolute;
-  bottom: -1px;
-  left: -8%;
-  width: 116%;
-  height: 1.75rem;
-  background: ${({ theme }) => theme.colors.white};
-  border-radius: 50% 50% 0 0;
-  z-index: 1;
-  pointer-events: none;
-`;
-
-const CategoryBadge = styled.span`
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 2;
-  max-width: calc(100% - 1.5rem);
-  padding: 0.3rem 0.65rem;
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  line-height: 1.3;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.white};
-  background: rgba(27, 54, 93, 0.92);
-  border-radius: 999px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 1.35rem;
+  opacity: 0.25;
 `;
 
 const Body = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
   flex: 1;
-  padding: 0.875rem 1.125rem 1.125rem;
-  gap: 0.35rem;
+  gap: 0.2rem;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
 `;
 
 const Name = styled.h3`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 1.0625rem;
+  font-size: 1rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.deepBlue};
   line-height: 1.25;
+  margin: 0;
 `;
 
-const Location = styled.p`
-  display: inline-flex;
+const ContactIcons = styled.div`
+  display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.aqua};
 `;
 
-const PinIcon = styled.svg`
-  width: 0.8rem;
-  height: 0.8rem;
-  flex-shrink: 0;
+const IconButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  color: ${({ theme }) => theme.colors.ocean};
+  background: ${({ theme }) => theme.colors.white};
+  cursor: pointer;
+  transition:
+    color ${({ theme }) => theme.transition},
+    border-color ${({ theme }) => theme.transition},
+    background ${({ theme }) => theme.transition};
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.aqua};
+    border-color: rgba(52, 152, 219, 0.35);
+    background: rgba(52, 152, 219, 0.06);
+  }
+`;
+
+const Meta = styled.p`
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+const Category = styled.span`
+  color: ${({ theme }) => theme.colors.ocean};
+  font-weight: 600;
 `;
 
 const Description = styled.p`
-  font-size: 0.8125rem;
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
   color: ${({ theme }) => theme.colors.textMuted};
-  line-height: 1.55;
-  flex: 1;
+  line-height: 1.45;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 `;
 
-const ViewLink = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin-top: 0.5rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.ocean};
-  transition:
-    gap ${({ theme }) => theme.transition},
-    color ${({ theme }) => theme.transition};
+function toWhatsAppUrl(value = '') {
+  const trimmed = String(value).trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  const digits = trimmed.replace(/\D/g, '');
+  return digits ? `https://wa.me/${digits}` : '';
+}
 
-  &:hover {
-    gap: 0.5rem;
-    color: ${({ theme }) => theme.colors.aqua};
-  }
+function openExternal(event, url) {
+  event.preventDefault();
+  event.stopPropagation();
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
 
-  ${media.md} {
-    font-size: 0.875rem;
-  }
-`;
+function openMail(event, address) {
+  event.preventDefault();
+  event.stopPropagation();
+  window.location.href = `mailto:${address}`;
+}
 
 export default function MemberCard({ professional }) {
   const { t } = useTranslation();
-  const { id, name, category, location, featuredImage, description } = professional;
+  const p = t.profile;
+  const {
+    id,
+    name,
+    category,
+    location,
+    featuredImage,
+    description,
+    email,
+    phone,
+    whatsapp,
+  } = professional;
+
+  const whatsappUrl = toWhatsAppUrl(whatsapp || phone);
 
   return (
-    <Card whileTap={{ scale: 0.99 }}>
-      <ImageWrapper>
+    <Card to={`/professionals/${id}`} whileTap={{ scale: 0.99 }}>
+      <Photo>
         {featuredImage ? (
-          <Image src={featuredImage} alt={name} loading="lazy" />
+          <Image src={featuredImage} alt="" loading="lazy" />
         ) : (
           <Placeholder aria-hidden="true">⚓</Placeholder>
         )}
-        {category && <CategoryBadge title={category}>{category}</CategoryBadge>}
-        <ImageCurve aria-hidden="true" />
-      </ImageWrapper>
+      </Photo>
 
       <Body>
-        <Name>{name}</Name>
-        {location && (
-          <Location>
-            <PinIcon viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
-            </PinIcon>
+        <TitleRow>
+          <Name>{name}</Name>
+          {(email || whatsappUrl) && (
+            <ContactIcons>
+              {email && (
+                <IconButton
+                  type="button"
+                  aria-label={p.email}
+                  title={email}
+                  onClick={(event) => openMail(event, email)}
+                >
+                  <SocialIcon name="email" />
+                </IconButton>
+              )}
+              {whatsappUrl && (
+                <IconButton
+                  type="button"
+                  aria-label={p.whatsapp}
+                  title={whatsapp || phone}
+                  onClick={(event) => openExternal(event, whatsappUrl)}
+                >
+                  <SocialIcon name="whatsapp" />
+                </IconButton>
+              )}
+            </ContactIcons>
+          )}
+        </TitleRow>
+
+        {(category || location) && (
+          <Meta>
+            {category && <Category>{category}</Category>}
+            {category && location && ' · '}
             {location}
-          </Location>
+          </Meta>
         )}
-        {description && <Description>{truncate(description, 120)}</Description>}
-        <ViewLink to={`/professionals/${id}`}>
-          {t.memberCard.viewProfile} <span aria-hidden="true">→</span>
-        </ViewLink>
+
+        {description && <Description>{truncate(description, 90)}</Description>}
       </Body>
     </Card>
   );

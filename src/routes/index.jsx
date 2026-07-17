@@ -11,8 +11,10 @@ const MemberProfile = lazy(() => import('../pages/MemberProfile'));
 const PaymentSuccess = lazy(() => import('../pages/PaymentSuccess'));
 const PaymentCancel = lazy(() => import('../pages/PaymentCancel'));
 const Contact = lazy(() => import('../pages/Contact'));
+const Faq = lazy(() => import('../pages/Faq'));
 const Professionals = lazy(() => import('../pages/Professionals'));
 const ProfessionalDetail = lazy(() => import('../pages/ProfessionalDetail'));
+const NotFound = lazy(() => import('../pages/NotFound'));
 
 function PageLoader() {
   return <LoadingState fullPage message="Loading page" />;
@@ -124,6 +126,18 @@ export const router = createBrowserRouter([
         element: <Navigate to="/contact" replace />,
       },
       {
+        path: 'faq',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <Faq />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'preguntas-frecuentes',
+        element: <Navigate to="/faq" replace />,
+      },
+      {
         path: 'professionals',
         element: (
           <Suspense fallback={<PageLoader />}>
@@ -136,6 +150,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <ProfessionalDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: '*',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <NotFound />
           </Suspense>
         ),
       },

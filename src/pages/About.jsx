@@ -85,33 +85,13 @@ const SkySection = styled(Section)`
   background: ${skySectionGradient};
 `;
 
-const MissionBanner = styled(ScrollReveal)`
-  text-align: center;
-  max-width: 44rem;
-  margin: 0 auto;
-  padding: ${({ theme }) => theme.space.xl};
-  background: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
-`;
-
-const MissionLabel = styled.span`
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.aqua};
-  margin-bottom: ${({ theme }) => theme.space.sm};
-`;
-
-const MissionQuote = styled.p`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-  font-style: italic;
-  line-height: 1.4;
-  color: ${({ theme }) => theme.colors.deepBlue};
+const WhiteAuraSection = styled(Section)`
+  background:
+    radial-gradient(ellipse 70% 55% at 88% 12%, rgba(52, 152, 219, 0.16) 0%, transparent 58%),
+    radial-gradient(ellipse 60% 50% at 8% 88%, rgba(27, 54, 93, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 55% 75%, rgba(78, 205, 196, 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 40% at 30% 18%, rgba(232, 213, 183, 0.18) 0%, transparent 55%),
+    ${({ theme }) => theme.colors.white};
 `;
 
 const ContentCard = styled(ScrollReveal)`
@@ -191,23 +171,14 @@ export default function About() {
         </HeroGrid>
       </Hero>
 
-      <Section id="mission" $bg="white">
-        <Container>
-          <MissionBanner>
-            <MissionLabel>{a.mission.label}</MissionLabel>
-            <MissionQuote>{a.mission.quote}</MissionQuote>
-          </MissionBanner>
-        </Container>
-      </Section>
-
-      <SkySection>
+      <WhiteAuraSection>
         <Container>
           <SectionTitle title={a.blueEconomy.title} align="left" />
           <Prose>
             <p>{a.blueEconomy.text}</p>
           </Prose>
         </Container>
-      </SkySection>
+      </WhiteAuraSection>
 
       <Section $bg="white">
         <Container>

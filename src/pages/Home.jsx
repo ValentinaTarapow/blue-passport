@@ -11,67 +11,13 @@ import PageTransition from '../components/PageTransition';
 import { useProfessionals } from '../hooks/useWordPress';
 import { useTranslation } from '../i18n/LanguageContext';
 import ServiceIcon from '../components/ServiceIcon';
-import { HERO_IMAGE, HOME_IMAGES } from '../utils/constants';
+import { HERO_IMAGE, HOME_IMAGES, LIST_WITH_US_URL } from '../utils/constants';
 import { staggerContainer, staggerItem } from '../styles/animations';
-import { Section, Container, Grid, TwoColumn } from '../styles/shared';
+import { Section, Container, TwoColumn } from '../styles/shared';
 import { media, skySectionGradient } from '../styles/theme';
 
 const SkySection = styled(Section)`
   background: ${skySectionGradient};
-`;
-
-const StatsSection = styled.section`
-  padding: 1.25rem 0 1.5rem;
-  background: ${({ theme }) => theme.colors.white};
-
-  ${media.md} {
-    padding: 1.5rem 0;
-  }
-`;
-
-const StatsWrap = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const StatsBar = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.625rem;
-  width: 100%;
-  max-width: 36rem;
-  margin: 0 auto;
-
-  ${media.maxMd} {
-    grid-template-columns: 1fr;
-    max-width: 14rem;
-  }
-`;
-
-const Stat = styled.div`
-  text-align: center;
-  padding: 0.625rem 0.5rem;
-  background: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.sm};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
-`;
-
-const StatValue = styled.div`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
-  color: ${({ theme }) => theme.colors.aqua};
-  margin-bottom: 0.125rem;
-  line-height: 1.1;
-`;
-
-const StatLabel = styled.div`
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textMuted};
-  line-height: 1.25;
 `;
 
 const Eyebrow = styled.span`
@@ -121,10 +67,22 @@ const ReadMoreLink = styled(Link)`
 
 const AboutImage = styled.img`
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
+  max-height: 12.5rem;
   object-fit: cover;
+  object-position: center;
   border-radius: ${({ theme }) => theme.radius.lg};
   box-shadow: ${({ theme }) => theme.shadows.lg};
+
+  ${media.md} {
+    aspect-ratio: 16 / 9;
+    max-height: 16rem;
+  }
+
+  ${media.lg} {
+    aspect-ratio: 16 / 10;
+    max-height: none;
+  }
 `;
 
 const ServicesSection = styled(Section)`
@@ -248,9 +206,9 @@ const CareerOverlay = styled.div`
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(15, 35, 60, 0.88) 0%,
-    rgba(27, 54, 93, 0.78) 50%,
-    rgba(35, 72, 118, 0.72) 100%
+    rgba(10, 24, 42, 0.94) 0%,
+    rgba(20, 42, 72, 0.9) 50%,
+    rgba(27, 54, 93, 0.88) 100%
   );
 `;
 
@@ -272,16 +230,26 @@ const CareerTitle = styled.h2`
 `;
 
 const WhySkySection = styled(SkySection)`
-  padding-top: 2rem;
+  padding-top: 1.25rem;
+  padding-bottom: 2rem;
 
   ${media.md} {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  ${media.lg} {
     padding-top: 2.5rem;
   }
 `;
 
 const WhyHeader = styled.div`
   text-align: center;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.125rem;
+
+  ${media.md} {
+    margin-bottom: 1.5rem;
+  }
 
   ${media.lg} {
     margin-bottom: 2.25rem;
@@ -299,8 +267,12 @@ const WhyHeader = styled.div`
 const WhyLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.75rem;
+  gap: 1.25rem;
   align-items: start;
+
+  ${media.md} {
+    gap: 1.5rem;
+  }
 
   ${media.lg} {
     grid-template-columns: 0.95fr 1.05fr;
@@ -311,11 +283,23 @@ const WhyLayout = styled.div`
 
 const WhyImage = styled.img`
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
+  max-height: 12.5rem;
   object-fit: cover;
-  object-position: center;
+  object-position: center 45%;
   border-radius: ${({ theme }) => theme.radius.lg};
   box-shadow: ${({ theme }) => theme.shadows.md};
+
+  ${media.md} {
+    aspect-ratio: 16 / 11;
+    max-height: 16rem;
+  }
+
+  ${media.lg} {
+    aspect-ratio: 1;
+    max-height: none;
+    object-position: center;
+  }
 `;
 
 const WhyList = styled.ol`
@@ -361,27 +345,87 @@ const WhyText = styled.p`
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
+const FeaturedSection = styled.section`
+  padding: 2rem 0 2.25rem;
+  background: ${({ theme }) => theme.colors.offWhite};
+
+  ${media.md} {
+    padding: 2.5rem 0 2.75rem;
+  }
+`;
+
+const FeaturedHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+
+  ${media.md} {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+`;
+
 const FeaturedTitle = styled.h2`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
   color: ${({ theme }) => theme.colors.deepBlue};
-  text-align: center;
-  margin-bottom: ${({ theme }) => theme.space.xl};
+  margin: 0;
+  line-height: 1.25;
+`;
+
+const FeaturedGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.875rem;
+
+  ${media.md} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  ${media.lg} {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const ViewAllLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  gap: ${({ theme }) => theme.space.xs};
-  margin-top: ${({ theme }) => theme.space.lg};
-  font-size: 0.875rem;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.ocean};
-  transition: gap ${({ theme }) => theme.transition};
+  transition:
+    gap ${({ theme }) => theme.transition},
+    color ${({ theme }) => theme.transition};
 
   &:hover {
-    gap: ${({ theme }) => theme.space.sm};
+    gap: 0.55rem;
     color: ${({ theme }) => theme.colors.aqua};
+  }
+`;
+
+const ViewAllWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1.25rem;
+
+  ${media.md} {
+    display: none;
+  }
+`;
+
+const ViewAllDesktop = styled(ViewAllLink)`
+  display: none;
+
+  ${media.md} {
+    display: inline-flex;
+    flex-shrink: 0;
   }
 `;
 
@@ -390,43 +434,61 @@ const SERVICE_ICON_KEYS = ['certification', 'connection', 'legal', 'training'];
 export default function Home() {
   const { t } = useTranslation();
   const { data: professionals, isLoading, isError, refetch } = useProfessionals();
-  const featured = professionals?.slice(0, 3) ?? [];
+  const featured = professionals?.slice(0, 6) ?? [];
   const h = t.home;
 
   return (
     <PageTransition>
       <HeroSection
-        eyebrow={h.hero.eyebrow}
         title={h.hero.title}
-        titleAccent={h.hero.titleAccent}
         quote={h.hero.quote}
         subtitle={h.hero.subtitle}
         image={HERO_IMAGE}
         imageAlt={h.hero.imageAlt}
         imageVariant="logo"
         primaryCta={{ label: h.hero.primaryCta, href: '/professionals' }}
-        secondaryCta={{ label: h.hero.secondaryCta, href: '/about' }}
+        secondaryCta={{ label: h.hero.secondaryCta, href: LIST_WITH_US_URL }}
       />
 
-      <StatsSection>
+      <FeaturedSection>
         <Container>
-          <StatsWrap>
-            <StatsBar
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-40px' }}
-            >
-              {h.stats.map((stat) => (
-                <Stat key={stat.label} as={motion.div} variants={staggerItem}>
-                  <StatValue>{stat.value}</StatValue>
-                  <StatLabel>{stat.label}</StatLabel>
-                </Stat>
-              ))}
-            </StatsBar>
-          </StatsWrap>
+          <FeaturedHeader>
+            <FeaturedTitle>{h.professionals.title}</FeaturedTitle>
+            <ViewAllDesktop to="/professionals">
+              {h.professionals.viewAll} <span aria-hidden="true">→</span>
+            </ViewAllDesktop>
+          </FeaturedHeader>
+
+          {isLoading && <LoadingState message={h.professionals.loading} />}
+          {isError && (
+            <ErrorState
+              title={h.professionals.errorTitle}
+              message={h.professionals.errorMessage}
+              onRetry={refetch}
+            />
+          )}
+          {!isLoading && !isError && (
+            <>
+              <FeaturedGrid>
+                {featured.length > 0 ? (
+                  featured.map((professional) => (
+                    <MemberCard key={professional.id} professional={professional} />
+                  ))
+                ) : (
+                  <BodyText style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
+                    {h.professionals.empty}
+                  </BodyText>
+                )}
+              </FeaturedGrid>
+              <ViewAllWrap>
+                <ViewAllLink to="/professionals">
+                  {h.professionals.viewAll} <span aria-hidden="true">→</span>
+                </ViewAllLink>
+              </ViewAllWrap>
+            </>
+          )}
         </Container>
-      </StatsSection>
+      </FeaturedSection>
 
       <SkySection>
         <Container>
@@ -511,40 +573,6 @@ export default function Home() {
           </WhyLayout>
         </Container>
       </WhySkySection>
-
-      <Section $bg="white">
-        <Container>
-          <FeaturedTitle>{h.professionals.title}</FeaturedTitle>
-          {isLoading && <LoadingState message={h.professionals.loading} />}
-          {isError && (
-            <ErrorState
-              title={h.professionals.errorTitle}
-              message={h.professionals.errorMessage}
-              onRetry={refetch}
-            />
-          )}
-          {!isLoading && !isError && (
-            <>
-              <Grid $cols={1} $colsLg={3}>
-                {featured.length > 0 ? (
-                  featured.map((professional) => (
-                    <MemberCard key={professional.id} professional={professional} />
-                  ))
-                ) : (
-                  <BodyText style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
-                    {h.professionals.empty}
-                  </BodyText>
-                )}
-              </Grid>
-              <div style={{ textAlign: 'center' }}>
-                <ViewAllLink to="/professionals">
-                  {h.professionals.viewAll} <span aria-hidden="true">→</span>
-                </ViewAllLink>
-              </div>
-            </>
-          )}
-        </Container>
-      </Section>
     </PageTransition>
   );
 }

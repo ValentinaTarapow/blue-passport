@@ -55,12 +55,25 @@ export function normalizeProfessional(item) {
   const locations = getTaxonomyTerms(item, 'at_biz_dir-location');
   const primaryCategory = pickPrimaryCategory(categories);
   const meta = item.meta ?? {};
+  const contact = item.bp_contact ?? {};
 
   const excerpt =
     item.uagb_excerpt ||
     item.excerpt?.rendered ||
     item.content?.rendered ||
     '';
+
+  const social = Array.isArray(contact.social)
+    ? contact.social.filter((link) => link?.id && link?.url)
+    : [];
+
+  const linkedin =
+    social.find((link) => link.id === 'linkedin')?.url ||
+    meta._linkedin ||
+    '';
+
+  const address = contact.address || meta._address || meta.address || '';
+  const taxonomyLocation = locations.map((loc) => stripHtml(loc.name)).join(', ');
 
   return {
     id: item.id,
@@ -70,13 +83,28 @@ export function normalizeProfessional(item) {
     biography: item.content?.rendered ?? '',
     category: stripHtml(primaryCategory?.name ?? 'Professional'),
     categories: categories.map((category) => stripHtml(category.name)),
-    location: locations.map((loc) => stripHtml(loc.name)).join(', '),
+    location: taxonomyLocation || address,
+    address,
     featuredImage: getFeaturedImage(item),
-    email: meta._email ?? meta.email ?? '',
-    phone: meta._phone ?? meta.phone ?? '',
-    website: meta._website ?? meta.website ?? '',
+    email: contact.email || meta._email || meta.email || '',
+    phone: contact.phone || meta._phone || meta.phone || '',
+    whatsapp: contact.whatsapp || contact.phone2 || meta._phone2 || '',
+    website: contact.website || meta._website || meta.website || '',
+    linkedin,
+    social,
     raw: item,
   };
+}
+
+/**
+ * Build a WhatsApp chat URL from a phone number or existing wa.me link.
+ */
+export function toWhatsAppUrl(value = '') {
+  const trimmed = String(value).trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  const digits = trimmed.replace(/\D/g, '');
+  return digits ? `https://wa.me/${digits}` : '';
 }
 
 /**

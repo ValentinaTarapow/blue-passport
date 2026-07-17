@@ -14,6 +14,7 @@ async function apiFetch(endpoint, params = {}) {
   const url = `${API_BASE}${endpoint}${query}`;
 
   const response = await fetch(url, {
+    cache: 'no-store',
     headers: {
       Accept: 'application/json',
     },

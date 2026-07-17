@@ -12,6 +12,7 @@ const NAV_LABEL_KEYS = {
   '/': 'home',
   '/about': 'about',
   '/professionals': 'professionals',
+  '/faq': 'faq',
   '/contact': 'contact',
 };
 
@@ -32,19 +33,25 @@ const Inner = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  gap: 0.5rem;
+  gap: 0.75rem;
   min-width: 0;
   width: 100%;
   max-width: 90rem;
   margin-inline: auto;
-  padding-inline: 0.75rem;
+  padding-inline: 1rem;
 
   ${media.md} {
-    padding-inline: 1rem;
+    padding-inline: 1.25rem;
   }
 
   ${media.nav} {
-    padding-inline: 1.125rem;
+    gap: 1.25rem;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 1280px) {
+    gap: 1.75rem;
+    padding-inline: 2rem;
   }
 `;
 
@@ -53,7 +60,7 @@ const Nav = styled.nav`
   align-items: center;
   flex: 1;
   min-width: 0;
-  gap: 0.75rem;
+  gap: 1rem;
 
   ${media.maxNav} {
     position: fixed;
@@ -74,7 +81,7 @@ const Nav = styled.nav`
 const NavList = styled.ul`
   display: none;
   align-items: center;
-  gap: 0.4375rem;
+  gap: 0.75rem;
   min-width: 0;
 
   ${media.maxNav} {
@@ -89,17 +96,22 @@ const NavList = styled.ul`
     flex: 1;
     min-width: 0;
     justify-content: center;
+    gap: 1rem;
   }
 
   @media (min-width: 1280px) {
-    gap: 0.625rem;
+    gap: 1.35rem;
+  }
+
+  @media (min-width: 1440px) {
+    gap: 1.75rem;
   }
 `;
 
 const StyledNavLink = styled(NavLink)`
   font-size: 0.6875rem;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.textMuted};
+  font-weight: ${({ $featured }) => ($featured ? 600 : 500)};
+  color: ${({ theme, $featured }) => ($featured ? theme.colors.ocean : theme.colors.textMuted)};
   transition: color ${({ theme }) => theme.transition};
   position: relative;
   white-space: nowrap;
@@ -107,25 +119,33 @@ const StyledNavLink = styled(NavLink)`
   flex-shrink: 0;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  padding: 0.35rem 0.15rem;
+  border-radius: 0;
+  background: transparent;
 
   @media (min-width: 1200px) {
     font-size: 0.75rem;
+    padding: 0.35rem 0.25rem;
   }
 
   @media (min-width: 1360px) {
     font-size: 0.8125rem;
+    padding: 0.4rem 0.35rem;
   }
 
   &::after {
     content: '';
     position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
+    bottom: 0;
+    left: 0.15rem;
+    right: 0.15rem;
+    width: auto;
     height: 2px;
     background: ${({ theme }) => theme.colors.aqua};
     border-radius: 1px;
-    transition: width ${({ theme }) => theme.transition};
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform ${({ theme }) => theme.transition};
   }
 
   &:hover,
@@ -135,7 +155,7 @@ const StyledNavLink = styled(NavLink)`
 
   &:hover::after,
   &.active::after {
-    width: 100%;
+    transform: scaleX(1);
   }
 
   ${media.maxNav} {
@@ -143,6 +163,12 @@ const StyledNavLink = styled(NavLink)`
     white-space: normal;
     text-transform: none;
     letter-spacing: 0;
+    padding: 0.25rem 0;
+
+    &::after {
+      left: 0;
+      right: 0;
+    }
   }
 `;
 
@@ -183,7 +209,7 @@ const MenuToggle = styled.button`
 const NavCtas = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
   flex-shrink: 0;
 
   ${media.maxNav} {
@@ -198,7 +224,7 @@ const NavCtas = styled.div`
   }
 
   ${media.nav} {
-    gap: 0.625rem;
+    gap: 0.75rem;
   }
 `;
 
@@ -221,12 +247,13 @@ const MobileCtas = styled(NavCtas)`
 const NavActions = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.875rem;
   flex-shrink: 0;
   margin-left: auto;
 
   ${media.nav} {
     margin-left: 0;
+    gap: 1rem;
   }
 `;
 
@@ -256,7 +283,7 @@ export default function Navbar() {
       <Button to="/professionals" variant="primary" size="sm" onClick={onNavigate}>
         {t.nav.cta.searchProfessionals}
       </Button>
-      <Button to={LIST_WITH_US_URL} variant="outline" size="sm" onClick={onNavigate}>
+      <Button to={LIST_WITH_US_URL} variant="gradientOutline" size="sm" onClick={onNavigate}>
         {t.nav.cta.listWithUs}
       </Button>
     </>
@@ -269,9 +296,9 @@ export default function Navbar() {
 
         <Nav $open={menuOpen}>
           <NavList>
-            {NAV_LINKS.map(({ path, end }) => (
+            {NAV_LINKS.map(({ path, end, featured }) => (
               <li key={path}>
-                <StyledNavLink to={path} onClick={closeMenu} end={end}>
+                <StyledNavLink to={path} onClick={closeMenu} end={end} $featured={featured}>
                   {t.nav[NAV_LABEL_KEYS[path]]}
                 </StyledNavLink>
               </li>

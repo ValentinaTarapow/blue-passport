@@ -8,6 +8,7 @@ const NAV_LABEL_KEYS = {
   '/': 'home',
   '/about': 'about',
   '/professionals': 'professionals',
+  '/faq': 'faq',
   '/contact': 'contact',
 };
 
@@ -169,7 +170,7 @@ export default function Footer() {
             <ColumnTitle>Connect</ColumnTitle>
             <LinkList>
               <li>
-                <ExternalLink href="mailto:info@bluepassport.org">info@bluepassport.org</ExternalLink>
+                <ExternalLink href="mailto:pagos@thebluepassport.es">pagos@thebluepassport.es</ExternalLink>
               </li>
               <li>
                 <FooterLink to="/professionals">Member Directory</FooterLink>

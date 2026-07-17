@@ -16,7 +16,7 @@ import { useTranslation } from '../i18n/LanguageContext';
 import { Container, Grid } from '../styles/shared';
 
 const SearchSection = styled.section`
-  padding: 0 0 ${({ theme }) => theme.space['2xl']};
+  padding: 0 0 ${({ theme }) => theme.space.sm};
   margin-top: -2rem;
   position: relative;
   z-index: 2;
@@ -30,7 +30,7 @@ const ResultsSection = styled.section`
 const ResultCount = styled.p`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textMuted};
-  margin-bottom: ${({ theme }) => theme.space.lg};
+  margin-bottom: ${({ theme }) => theme.space.sm};
 `;
 
 const EmptyState = styled.div`

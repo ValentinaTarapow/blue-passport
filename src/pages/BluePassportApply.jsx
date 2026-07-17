@@ -93,9 +93,8 @@ export default function BluePassportApply() {
     () =>
       resolveApplicationPlan({
         hasProtocolTraining: form.hasProtocolTraining,
-        partnerCode: partnerCodeActive ? partnerCodeInput : '',
       }),
-    [form.hasProtocolTraining, partnerCodeActive, partnerCodeInput],
+    [form.hasProtocolTraining],
   );
   const pricingSummary = a.pricing.summaries[activePlanId];
 
@@ -208,7 +207,6 @@ export default function BluePassportApply() {
     const partnerCode = partnerCodeActive ? normalizePartnerCode(partnerCodeInput) : '';
     const planId = resolveApplicationPlan({
       hasProtocolTraining: form.hasProtocolTraining,
-      partnerCode,
     });
     const application = createApplication({
       ...form,

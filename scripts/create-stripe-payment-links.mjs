@@ -8,34 +8,28 @@ const SUCCESS_URL = 'https://thebluepassport.org/blue-passport/success';
 
 const PLANS = [
   {
-    id: 'annual_protocol',
-    env: 'VITE_STRIPE_PLAN_ANNUAL_PROTOCOL',
-    amount: 5000,
-    name: 'Blue Passport Annual Membership',
-    description:
-      'Annual membership for certified professionals already holding the Elite Yacht Protocol certification.',
-  },
-  {
-    id: 'annual_protocol_course',
-    env: 'VITE_STRIPE_PLAN_ANNUAL_PROTOCOL_COURSE',
+    id: 'crew',
+    env: 'VITE_STRIPE_PLAN_CREW',
     amount: 15000,
-    name: 'Blue Passport Annual Membership + Elite Yacht Protocol',
-    description: 'Annual membership including the Elite Yacht Protocol training.',
-  },
-  {
-    id: 'partner_protocol',
-    env: 'VITE_STRIPE_PLAN_PARTNER_PROTOCOL',
-    amount: 2500,
-    name: 'Blue Passport Partner Membership',
-    description: 'Discounted annual membership for approved partners.',
-  },
-  {
-    id: 'partner_protocol_course',
-    env: 'VITE_STRIPE_PLAN_PARTNER_PROTOCOL_COURSE',
-    amount: 12500,
-    name: 'Blue Passport Partner Membership + Elite Yacht Protocol',
+    name: 'Blue Crew Member',
     description:
-      'Discounted annual membership including the Elite Yacht Protocol training.',
+      'Annual membership for onboard megayacht professionals. Includes directory listing and Validación Blue (€50 listing + €100 credential validation).',
+  },
+  {
+    id: 'expert',
+    env: 'VITE_STRIPE_PLAN_EXPERT',
+    amount: 15000,
+    name: 'Blue Expert Member',
+    description:
+      'Annual membership for technical, legal or service professionals. Includes directory listing and Elite Yacht Protocol certification (€50 listing + €100 course).',
+  },
+  {
+    id: 'partner',
+    env: 'VITE_STRIPE_PLAN_PARTNER',
+    amount: 5000,
+    name: 'Blue Certified Partner',
+    description:
+      'Annual directory membership for professionals and companies with a valid Blue Certificate. Includes featured profile and Blue Certified Partner badge. Credential validation fees are waived.',
   },
 ];
 
