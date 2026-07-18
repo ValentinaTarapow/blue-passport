@@ -52,3 +52,29 @@ export function getCountryOptions(locale = 'en') {
 
   return options.sort((a, b) => a.label.localeCompare(b.label, displayLocale));
 }
+
+function normalizeCountryText(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase();
+}
+
+/**
+ * Whether a professional's location/address matches a country option.
+ * @param {{ location?: string, address?: string } | null} professional
+ * @param {{ value?: string, label?: string } | null} country
+ */
+export function professionalMatchesCountry(professional, country) {
+  if (!country?.value && !country?.label) return true;
+
+  const haystack = normalizeCountryText(
+    [professional?.location, professional?.address].filter(Boolean).join(' '),
+  );
+  if (!haystack) return false;
+
+  return [country.value, country.label]
+    .filter(Boolean)
+    .map(normalizeCountryText)
+    .some((needle) => needle && haystack.includes(needle));
+}

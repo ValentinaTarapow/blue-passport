@@ -365,7 +365,27 @@ function bpapi_get_listing_contact($object) {
         'website' => (string) get_post_meta($id, '_website', true),
         'address' => (string) get_post_meta($id, '_address', true),
         'social'  => $social,
+        // Published directory members show the Blue Certificate seal by default.
+        // Set post meta `_bp_certificate_holder` to `0` to hide it.
+        'certificateHolder' => bpapi_listing_is_certificate_holder($id),
     ];
+}
+
+/**
+ * Whether a listing should show the Blue Certificate Holder seal.
+ *
+ * @param int $id Listing ID.
+ * @return bool
+ */
+function bpapi_listing_is_certificate_holder($id) {
+    $flag = strtolower((string) get_post_meta($id, '_bp_certificate_holder', true));
+    if (in_array($flag, ['0', 'no', 'false'], true)) {
+        return false;
+    }
+    if (in_array($flag, ['1', 'yes', 'true'], true)) {
+        return true;
+    }
+    return get_post_status($id) === 'publish';
 }
 
 function bpapi_empty_listing_contact() {
@@ -377,6 +397,7 @@ function bpapi_empty_listing_contact() {
         'website'  => '',
         'address'  => '',
         'social'   => [],
+        'certificateHolder' => false,
     ];
 }
 
@@ -971,6 +992,65 @@ function bpapi_handle_approve_and_charge() {
 }
 
 add_action('add_meta_boxes', 'bpapi_add_payment_metabox');
+add_action('add_meta_boxes', 'bpapi_add_profile_metabox');
+add_action('save_post_at_biz_dir', 'bpapi_save_profile_metabox');
+
+/**
+ * Metas simples del perfil Blue Passport (certificado + guía de campos).
+ */
+function bpapi_add_profile_metabox() {
+    add_meta_box(
+        'bpapi_profile_box',
+        'Blue Passport — Perfil',
+        'bpapi_render_profile_metabox',
+        'at_biz_dir',
+        'side',
+        'high'
+    );
+}
+
+function bpapi_render_profile_metabox($post) {
+    wp_nonce_field('bpapi_save_profile_' . $post->ID, 'bpapi_profile_nonce');
+
+    $flag    = strtolower((string) get_post_meta($post->ID, '_bp_certificate_holder', true));
+    $checked = !in_array($flag, ['0', 'no', 'false'], true);
+
+    echo '<p style="margin:0 0 12px;">';
+    echo '<label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;">';
+    echo '<input type="checkbox" name="bp_certificate_holder" value="1"' . checked($checked, true, false) . ' style="margin-top:3px;" />';
+    echo '<span><strong>Blue Certificate Holder</strong><br>';
+    echo '<span style="color:#646970;">Mostrar el sello en la web</span></span>';
+    echo '</label></p>';
+
+    echo '<hr style="margin:12px 0;border:none;border-top:1px solid #dcdcde;" />';
+    echo '<p style="margin:0 0 8px;"><strong>Cómo completar el anuncio</strong></p>';
+    echo '<ol style="margin:0;padding-left:1.2rem;color:#50575e;line-height:1.55;">';
+    echo '<li style="margin-bottom:6px;"><strong>Título</strong> = nombre y apellido</li>';
+    echo '<li style="margin-bottom:6px;"><strong>Listing Categories</strong> = especialidades</li>';
+    echo '<li style="margin-bottom:6px;"><strong>Listing Locations</strong> = áreas de cobertura (tags en la biografía)</li>';
+    echo '<li><strong>Contenido</strong> = biografía / perfil (sin pegar Cobertura ni el badge)</li>';
+    echo '</ol>';
+}
+
+function bpapi_save_profile_metabox($post_id) {
+    if (!isset($_POST['bpapi_profile_nonce']) || !wp_verify_nonce(
+        sanitize_text_field(wp_unslash($_POST['bpapi_profile_nonce'])),
+        'bpapi_save_profile_' . $post_id
+    )) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    $value = isset($_POST['bp_certificate_holder']) ? '1' : '0';
+    update_post_meta($post_id, '_bp_certificate_holder', $value);
+}
 
 function bpapi_add_payment_metabox() {
     add_meta_box(

@@ -43,7 +43,7 @@
     ExpiresByType application/javascript A2419200
     ExpiresByType text/javascript A2419200
     ExpiresByType text/x-js A2419200
-    ExpiresByType text/html A3600
+    ExpiresByType text/html A0
     ExpiresByType text/richtext A3600
     ExpiresByType image/svg+xml A3600
     ExpiresByType text/plain A3600
@@ -62,7 +62,9 @@
     ExpiresByType application/x-gzip A2419200
     ExpiresByType image/x-icon A2419200
     ExpiresByType image/jpeg A2419200
-    ExpiresByType application/json A2419200
+    # REST / directory JSON must stay fresh (was A2419200 and hid Directorist edits)
+    ExpiresByType application/json A0
+    ExpiresByType application/ld+json A0
     ExpiresByType application/vnd.ms-access A2419200
     ExpiresByType audio/midi A2419200
     ExpiresByType video/quicktime A2419200
@@ -120,6 +122,18 @@ require all denied
 
 # BEGIN Blue Passport React + WordPress
 DirectoryIndex index.html index.php
+
+# Never cache SPA shell or REST JSON (Directorist edits must show immediately)
+<IfModule mod_headers.c>
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+  SetEnvIf Request_URI "^/wp-json" BP_NOCACHE
+  Header always set Cache-Control "no-cache, no-store, must-revalidate" env=BP_NOCACHE
+</IfModule>
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import LoadingState from '../components/LoadingState';
@@ -5,9 +6,12 @@ import ErrorState from '../components/ErrorState';
 import PageTransition from '../components/PageTransition';
 import ScrollReveal from '../components/ScrollReveal';
 import BiographyContent from '../components/BiographyContent';
+import CertificateBadge from '../components/CertificateBadge';
+import { extractCoverageFromBiography } from '../utils/formatBiography';
 import SocialIcon from '../components/ui/SocialIcon';
-import { useProfessional } from '../hooks/useWordPress';
+import { useProfessional, useProfessionalCategories, useProfessionalLocations } from '../hooks/useWordPress';
 import { useTranslation } from '../i18n/LanguageContext';
+import { formatProfessionalCategories, withResolvedTaxonomies } from '../utils/helpers';
 import { Section, Container } from '../styles/shared';
 import { media } from '../styles/theme';
 
@@ -53,6 +57,7 @@ const Card = styled.article`
 
 const Header = styled.header`
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   align-items: flex-start;
 `;
@@ -106,6 +111,14 @@ const Name = styled.h1`
   line-height: 1.25;
   color: ${({ theme }) => theme.colors.deepBlue};
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+`;
+
+const NameText = styled.span`
+  min-width: 0;
 `;
 
 const ContactIcons = styled.div`
@@ -114,6 +127,56 @@ const ContactIcons = styled.div`
   align-items: center;
   gap: 0.35rem;
   margin-top: 0.15rem;
+`;
+
+const IconTip = styled.span`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover .detail-tooltip,
+  &:focus-within .detail-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+`;
+
+const Tooltip = styled.span`
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  z-index: 6;
+  padding: 0.35rem 0.55rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: ${({ theme }) => theme.colors.deepBlue};
+  color: ${({ theme }) => theme.colors.white};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 0.15rem);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s ease;
+  box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: ${({ theme }) => theme.colors.deepBlue};
+  }
 `;
 
 const IconLink = styled.a`
@@ -142,30 +205,41 @@ const IconLink = styled.a`
   }
 `;
 
-const Meta = styled.p`
-  margin: 0.25rem 0 0;
+const Meta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 0.25rem;
+`;
+
+const Category = styled.p`
+  margin: 0;
   font-size: 0.8125rem;
   line-height: 1.4;
+  color: ${({ theme }) => theme.colors.ocean};
+  font-weight: 600;
+`;
+
+const Location = styled.p`
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 400;
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
-const Category = styled.span`
-  color: ${({ theme }) => theme.colors.ocean};
-  font-weight: 600;
+const CertRow = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
 `;
 
-const CertBadge = styled.span`
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.2rem 0.55rem;
-  font-size: 0.6875rem;
+const CertLabel = styled.span`
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: ${({ theme }) => theme.colors.ocean};
-  background: rgba(52, 152, 219, 0.08);
-  border: 1px solid rgba(52, 152, 219, 0.18);
-  border-radius: ${({ theme }) => theme.radius.sm};
 `;
 
 const Divider = styled.hr`
@@ -175,40 +249,37 @@ const Divider = styled.hr`
   margin: 1rem 0;
 `;
 
-const SectionHeading = styled.h2`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.deepBlue};
-  margin: 0 0 0.5rem;
-`;
-
 const BioWrap = styled.div`
   & > div {
-    gap: 0.5rem;
-  }
-
-  .bio-lead {
-    margin-bottom: 0.15rem;
+    gap: 0.65rem;
   }
 
   .bio-lead-name {
-    font-size: 1rem;
-  }
-
-  .bio-lead-tagline {
-    font-size: 0.875rem;
+    font-size: 1.0625rem;
   }
 
   .bio-highlight {
     font-size: 0.875rem;
-    line-height: 1.5;
-    padding: 0.5rem 0.75rem;
+    line-height: 1.55;
+    padding: 0.65rem 0.85rem;
   }
 
   .bio-section {
+    font-family: ${({ theme }) => theme.fonts.body};
     font-size: 0.9375rem;
-    margin: 0.35rem 0 0;
-    padding-top: 0.35rem;
+    font-weight: 700;
+    margin: 0.75rem 0 0.25rem;
+    padding-top: 0.1rem;
+  }
+
+  .bio-list {
+    gap: 0.25rem;
+    padding-left: 1.15rem;
+  }
+
+  .bio-list-item {
+    font-size: 0.875rem;
+    padding: 0;
   }
 
   .bio-item {
@@ -222,21 +293,37 @@ const BioWrap = styled.div`
 
   .bio-item-text,
   .bio-paragraph {
-    font-size: 0.8125rem;
-    line-height: 1.5;
+    font-size: 0.875rem;
+    line-height: 1.6;
   }
 
   .bio-quote {
-    font-size: 0.875rem;
-    line-height: 1.5;
-    padding: 0.65rem 0.85rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    padding: 0.75rem 0.9rem 0.75rem 1.5rem;
     margin-top: 0.35rem;
 
     &::before {
-      font-size: 1.25rem;
-      top: 0.15rem;
-      left: 0.5rem;
+      font-size: 1.35rem;
+      top: 0.2rem;
+      left: 0.55rem;
     }
+  }
+
+  .bio-coverage {
+    gap: 0.45rem;
+    margin: 0.1rem 0 0.15rem;
+  }
+
+  .bio-coverage .bio-section {
+    margin: 0;
+    padding: 0;
+    font-size: 0.75rem;
+  }
+
+  .bio-tag {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.65rem;
   }
 `;
 
@@ -255,6 +342,18 @@ const ExtraLink = styled.a`
   &:hover {
     color: ${({ theme }) => theme.colors.aqua};
   }
+`;
+
+const AddressLine = styled.p`
+  flex: 1 0 100%;
+  margin: -0.35rem 0 0;
+  padding: 0;
+  text-align: right;
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: ${({ theme }) => theme.colors.textMuted};
 `;
 
 const SocialList = styled.ul`
@@ -312,12 +411,19 @@ export default function ProfessionalDetail() {
   const { t } = useTranslation();
   const p = t.profile;
   const { data: professional, isLoading, isError, refetch } = useProfessional(id);
+  const { data: taxonomyCategories = [] } = useProfessionalCategories();
+  const { data: taxonomyLocations = [] } = useProfessionalLocations();
+
+  const resolvedProfessional = useMemo(
+    () => withResolvedTaxonomies(professional, taxonomyCategories, taxonomyLocations),
+    [professional, taxonomyCategories, taxonomyLocations],
+  );
 
   if (isLoading) {
     return <LoadingState fullPage message={p.loading} />;
   }
 
-  if (isError || !professional) {
+  if (isError || !resolvedProfessional) {
     return (
       <Section>
         <Container>
@@ -335,8 +441,10 @@ export default function ProfessionalDetail() {
 
   const {
     name,
-    category,
     location,
+    coverage = [],
+    address,
+    physicalAddress,
     featuredImage,
     biography,
     email,
@@ -345,8 +453,13 @@ export default function ProfessionalDetail() {
     website,
     linkedin,
     social,
-  } = professional;
+    isCertificateHolder,
+  } = resolvedProfessional;
 
+  const categoryLabel = formatProfessionalCategories(resolvedProfessional);
+  const bioCoverage = extractCoverageFromBiography(biography || '');
+  const coverageTags = [...new Set([...(coverage || []), ...bioCoverage].filter(Boolean))];
+  const addressText = String(physicalAddress || address || professional?.address || '').trim();
   const whatsappUrl = toWhatsAppUrl(whatsapp || phone);
   const socialLinks = (social || []).filter((link) => link.id !== 'linkedin' || !linkedin);
   const displaySocial = [
@@ -377,46 +490,69 @@ export default function ProfessionalDetail() {
 
                 <HeaderText>
                   <TitleRow>
-                    <Name>{name}</Name>
+                    <Name>
+                      <NameText>{name}</NameText>
+                    </Name>
                     {(email || whatsappUrl) && (
                       <ContactIcons>
                         {email && (
-                          <IconLink href={`mailto:${email}`} aria-label={p.email} title={email}>
-                            <SocialIcon name="email" />
-                          </IconLink>
+                          <IconTip>
+                            <IconLink href={`mailto:${email}`} aria-label={p.email}>
+                              <SocialIcon name="email" />
+                            </IconLink>
+                            <Tooltip className="detail-tooltip" role="tooltip">
+                              {p.email}
+                            </Tooltip>
+                          </IconTip>
                         )}
                         {whatsappUrl && (
-                          <IconLink
-                            href={whatsappUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={p.whatsapp}
-                            title={whatsapp || phone}
-                          >
-                            <SocialIcon name="whatsapp" />
-                          </IconLink>
+                          <IconTip>
+                            <IconLink
+                              href={whatsappUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={p.whatsapp}
+                            >
+                              <SocialIcon name="whatsapp" />
+                            </IconLink>
+                            <Tooltip className="detail-tooltip" role="tooltip">
+                              {p.whatsapp}
+                            </Tooltip>
+                          </IconTip>
                         )}
                       </ContactIcons>
                     )}
                   </TitleRow>
 
-                  {(category || location) && (
+                  {(categoryLabel || (!coverageTags.length && location)) && (
                     <Meta>
-                      {category && <Category>{category}</Category>}
-                      {category && location && ' · '}
-                      {location}
+                      {categoryLabel && <Category>{categoryLabel}</Category>}
+                      {!coverageTags.length && location && <Location>{location}</Location>}
                     </Meta>
                   )}
-                  <CertBadge>{p.certBadge}</CertBadge>
+
+                  {isCertificateHolder && (
+                    <CertRow>
+                      <CertificateBadge label={p.certBadge} size="sm" showTooltip={false} />
+                      <CertLabel>{p.certBadge}</CertLabel>
+                    </CertRow>
+                  )}
                 </HeaderText>
+
+                {addressText && (
+                  <AddressLine aria-label={p.address}>{addressText}</AddressLine>
+                )}
               </Header>
 
-              {biography && (
+              {(biography || coverageTags.length > 0) && (
                 <>
                   <Divider />
-                  <SectionHeading>{p.biography}</SectionHeading>
                   <BioWrap>
-                    <BiographyContent html={biography} />
+                    <BiographyContent
+                      html={biography}
+                      coverageTags={coverageTags}
+                      coverageLabel={p.coverage}
+                    />
                   </BioWrap>
                 </>
               )}
@@ -454,6 +590,7 @@ export default function ProfessionalDetail() {
                   </ExtraLinks>
                 </>
               )}
+
             </Card>
           </ScrollReveal>
         </Container>

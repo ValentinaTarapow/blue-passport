@@ -7,12 +7,15 @@ import { media, patternSvg } from '../styles/theme';
 
 const Hero = styled.section`
   position: relative;
-  min-height: ${({ $logoHero }) => ($logoHero ? 'auto' : '100svh')};
+  min-height: 100svh;
+  height: ${({ $logoHero }) => ($logoHero ? '100svh' : 'auto')};
+  max-height: ${({ $logoHero }) => ($logoHero ? '100svh' : 'none')};
   display: flex;
   flex-direction: column;
   padding-top: ${({ theme }) => theme.layout.navbarHeight};
   box-sizing: border-box;
   overflow-x: clip;
+  overflow-y: ${({ $logoHero }) => ($logoHero ? 'hidden' : 'visible')};
 
   ${media.lg} {
     min-height: 100svh;
@@ -44,27 +47,38 @@ const Inner = styled(Container)`
   position: relative;
   z-index: 1;
   display: grid;
-  gap: ${({ theme }) => theme.space.lg};
-  padding-block: ${({ theme }) => theme.space.lg};
+  gap: ${({ $logoHero, theme }) => ($logoHero ? '0.5rem' : theme.space.lg)};
+  padding-block: ${({ $logoHero, theme }) =>
+    $logoHero ? '0.35rem 0.65rem' : theme.space.lg};
   flex: 1;
   min-height: 0;
   width: 100%;
+  height: ${({ $logoHero, theme }) =>
+    $logoHero ? `calc(100svh - ${theme.layout.navbarHeight})` : 'auto'};
+  max-height: ${({ $logoHero, theme }) =>
+    $logoHero ? `calc(100svh - ${theme.layout.navbarHeight})` : 'none'};
+  align-content: ${({ $logoHero }) => ($logoHero ? 'center' : 'start')};
+  overflow-y: ${({ $logoHero }) => ($logoHero ? 'auto' : 'visible')};
+  -webkit-overflow-scrolling: touch;
 
   ${media.md} {
-    gap: ${({ theme }) => theme.space.xl};
-    padding-block: ${({ theme }) => theme.space.xl};
+    gap: ${({ $logoHero, theme }) => ($logoHero ? '0.65rem' : theme.space.xl)};
+    padding-block: ${({ $logoHero, theme }) =>
+      $logoHero ? '0.5rem 0.75rem' : theme.space.xl};
   }
 
   ${media.lg} {
     grid-template-columns: ${({ $hasImage }) =>
       $hasImage ? '1.15fr 0.85fr' : '1fr'};
     align-items: center;
+    align-content: stretch;
     gap: clamp(2.5rem, 5vw, 4rem);
     padding-block: clamp(1.25rem, 3svh, 2rem);
     height: ${({ $compact, theme }) =>
       $compact ? 'auto' : `calc(100svh - ${theme.layout.navbarHeight})`};
     max-height: ${({ $compact, theme }) =>
       $compact ? 'none' : `calc(100svh - ${theme.layout.navbarHeight})`};
+    overflow-y: visible;
   }
 `;
 
@@ -74,13 +88,14 @@ const ContentStack = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
+  gap: ${({ $compactMobile }) => ($compactMobile ? '0.4rem' : '0.875rem')};
   margin-inline: ${({ $centered }) => ($centered ? 'auto' : '0')};
   text-align: ${({ $centered }) => ($centered ? 'center' : 'left')};
   align-items: ${({ $centered }) => ($centered ? 'center' : 'stretch')};
+  min-height: 0;
 
   ${media.md} {
-    gap: 1rem;
+    gap: ${({ $compactMobile }) => ($compactMobile ? '0.5rem' : '1rem')};
   }
 
   ${media.lg} {
@@ -92,11 +107,28 @@ const ContentStack = styled.div`
   }
 `;
 
+/* Keeps title/logo/text vertically centered like before while real CTAs are pinned. */
+const ActionsSpacer = styled.div`
+  display: ${({ $active }) => ($active ? 'block' : 'none')};
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 22rem;
+  height: calc(0.15rem + 0.5rem + (0.8rem * 2 + 1.25rem) * 2);
+  visibility: hidden;
+  pointer-events: none;
+
+  ${media.md} {
+    display: none;
+  }
+`;
+
 const InlineLogo = styled(motion.div)`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin: 0.15rem 0;
+  margin: 0;
+  flex-shrink: 1;
+  min-height: 0;
 
   ${media.lg} {
     display: none;
@@ -105,14 +137,14 @@ const InlineLogo = styled(motion.div)`
 
 const InlineLogoImage = styled.img`
   display: block;
-  width: min(100%, 17rem);
+  width: min(100%, 13.5rem);
   height: auto;
-  max-height: 10.5rem;
+  max-height: min(7.5rem, 22svh);
   object-fit: contain;
 
   ${media.md} {
-    width: min(100%, 20rem);
-    max-height: 12rem;
+    width: min(100%, 16rem);
+    max-height: min(9rem, 24svh);
   }
 `;
 
@@ -139,9 +171,9 @@ const Tagline = styled(motion.p)`
 
 const Title = styled(motion.h1)`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(1.875rem, 7vw, 2.5rem);
+  font-size: clamp(1.625rem, 6.5vw, 2.25rem);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.12;
   color: ${({ theme }) => theme.colors.deepBlue};
   text-wrap: balance;
   margin: 0;
@@ -166,8 +198,8 @@ const TitleAccent = styled.em`
 
 const Quote = styled(motion.blockquote)`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(1.0625rem, 3.6vw, 1.375rem);
-  line-height: 1.5;
+  font-size: clamp(0.9375rem, 3.2vw, 1.2rem);
+  line-height: 1.4;
   font-style: italic;
   color: ${({ theme }) => theme.colors.ocean};
   margin: 0;
@@ -182,8 +214,8 @@ const Quote = styled(motion.blockquote)`
 `;
 
 const Subtitle = styled(motion.p)`
-  font-size: 0.975rem;
-  line-height: 1.7;
+  font-size: 0.875rem;
+  line-height: 1.5;
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;
   max-width: 36rem;
@@ -199,25 +231,49 @@ const Actions = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.75rem;
-  margin: 0.35rem 0 0;
+  gap: 0.5rem;
+  margin: 0.15rem 0 0;
   width: 100%;
   max-width: 22rem;
+  flex-shrink: 0;
+
+  ${({ $pinBottom, theme }) =>
+    $pinBottom &&
+    `
+    position: absolute;
+    left: ${theme.layout.containerPadding};
+    right: ${theme.layout.containerPadding};
+    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+    z-index: 2;
+    margin: 0 auto;
+    width: auto;
+  `}
 
   a {
     width: 100%;
     justify-content: center;
+    padding-block: 0.8rem;
+    font-size: 0.9375rem;
   }
 
   ${media.md} {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    z-index: auto;
+    margin: 0.15rem 0 0;
+    width: 100%;
+    max-width: none;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: none;
-    gap: 0.875rem;
+    gap: 0.75rem;
 
     a {
       width: auto;
+      padding-block: 1rem;
+      font-size: 1rem;
     }
   }
 
@@ -294,7 +350,7 @@ export default function HeroSection({
 
   const content = (
     <>
-      <ContentStack $centered={isLogo}>
+      <ContentStack $centered={isLogo} $compactMobile={isLogo}>
         {eyebrow && (
           <Badge custom={0} initial="hidden" animate="visible" variants={heroTextReveal}>
             {eyebrow}
@@ -329,8 +385,15 @@ export default function HeroSection({
             {subtitle}
           </Subtitle>
         )}
+        <ActionsSpacer $active={isLogo} aria-hidden="true" />
         {(primaryCta || secondaryCta) && (
-          <Actions custom={3} initial="hidden" animate="visible" variants={heroTextReveal}>
+          <Actions
+            $pinBottom={isLogo}
+            custom={3}
+            initial="hidden"
+            animate="visible"
+            variants={heroTextReveal}
+          >
             {primaryCta && (
               <Button to={primaryCta.href} variant="primary" size="lg">
                 {primaryCta.label}
@@ -373,7 +436,9 @@ export default function HeroSection({
     <Hero $logoHero={isLogo}>
       <BgGradient aria-hidden="true" />
       <BgPattern aria-hidden="true" />
-      <Inner $hasImage={Boolean(image)}>{content}</Inner>
+      <Inner $hasImage={Boolean(image)} $logoHero={isLogo}>
+        {content}
+      </Inner>
     </Hero>
   );
 }

@@ -30,7 +30,10 @@ export function useProfessionals(params = {}) {
   return useQuery({
     queryKey: [...QUERY_KEYS.professionals, params],
     queryFn: () => getProfessionals(params),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
   });
 }
 
@@ -39,7 +42,9 @@ export function useProfessional(id) {
     queryKey: QUERY_KEYS.professional(id),
     queryFn: () => getProfessional(id),
     enabled: Boolean(id),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 60 * 1000,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
   });
 }
 
@@ -47,7 +52,8 @@ export function useProfessionalCategories() {
   return useQuery({
     queryKey: QUERY_KEYS.professionalCategories,
     queryFn: () => getProfessionalCategories(),
-    staleTime: 30 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
   });
 }
 
@@ -55,6 +61,7 @@ export function useProfessionalLocations() {
   return useQuery({
     queryKey: QUERY_KEYS.professionalLocations,
     queryFn: () => getProfessionalLocations(),
-    staleTime: 30 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
+    refetchOnMount: 'always',
   });
 }

@@ -179,16 +179,16 @@ const CareerBanner = styled.div`
   position: relative;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.radius.xl};
-  min-height: 12rem;
+  min-height: 8rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   box-shadow: ${({ theme }) => theme.shadows.lg};
 
   ${media.md} {
-    min-height: 13rem;
-    padding: 2.5rem;
+    min-height: 9rem;
+    padding: 1.5rem 2rem;
   }
 `;
 
@@ -217,14 +217,16 @@ const CareerContent = styled.div`
   z-index: 1;
   text-align: center;
   display: grid;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-items: center;
+  width: min(100%, 40rem);
 `;
 
 const CareerTitle = styled.h2`
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: clamp(1.5rem, 3.5vw, 2.125rem);
-  max-width: 22ch;
+  max-width: none;
+  line-height: 1.25;
   color: ${({ theme }) => theme.colors.white};
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
 `;

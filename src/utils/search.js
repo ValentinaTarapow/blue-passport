@@ -125,11 +125,11 @@ export function toggleCategoryIds(categoryIds = [], categoryId, categories = [])
 
 /**
  * Build search params object for the professionals API.
+ * Location/country is filtered client-side (full country list).
  */
-export function buildProfessionalSearchParams({ query, categoryId, locationId }) {
+export function buildProfessionalSearchParams({ query, categoryId }) {
   return {
     ...(query?.trim() ? { search: query.trim() } : {}),
     ...(categoryId ? { categoryId: Number(categoryId) } : {}),
-    ...(locationId ? { locationId: Number(locationId) } : {}),
   };
 }

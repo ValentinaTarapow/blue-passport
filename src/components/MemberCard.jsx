@@ -1,9 +1,15 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import SocialIcon from './ui/SocialIcon';
+import CertificateBadge from './CertificateBadge';
 import { useTranslation } from '../i18n/LanguageContext';
-import { truncate } from '../utils/helpers';
+import { useProfessionalCategories } from '../hooks/useWordPress';
+import {
+  formatProfessionalCategories,
+  withResolvedCategories,
+} from '../utils/helpers';
 import { media } from '../styles/theme';
 
 const Card = styled(motion(Link))`
@@ -89,6 +95,8 @@ const Name = styled.h3`
   color: ${({ theme }) => theme.colors.deepBlue};
   line-height: 1.25;
   margin: 0;
+  min-width: 0;
+  flex: 1;
 `;
 
 const ContactIcons = styled.div`
@@ -96,6 +104,57 @@ const ContactIcons = styled.div`
   flex-shrink: 0;
   align-items: center;
   gap: 0.3rem;
+  height: 1.75rem;
+`;
+
+const IconTip = styled.span`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover .card-tooltip,
+  &:focus-within .card-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+`;
+
+const Tooltip = styled.span`
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  z-index: 6;
+  padding: 0.35rem 0.55rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: ${({ theme }) => theme.colors.deepBlue};
+  color: ${({ theme }) => theme.colors.white};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 0.15rem);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s ease;
+  box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: ${({ theme }) => theme.colors.deepBlue};
+  }
 `;
 
 const IconButton = styled.button`
@@ -127,27 +186,35 @@ const IconButton = styled.button`
   }
 `;
 
-const Meta = styled.p`
+const CertSlot = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+`;
+
+const Meta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin: 0;
+`;
+
+const Category = styled.p`
   margin: 0;
   font-size: 0.75rem;
   line-height: 1.35;
-  color: ${({ theme }) => theme.colors.textMuted};
-`;
-
-const Category = styled.span`
   color: ${({ theme }) => theme.colors.ocean};
   font-weight: 600;
 `;
 
-const Description = styled.p`
-  margin: 0.15rem 0 0;
-  font-size: 0.75rem;
+const Location = styled.p`
+  margin: 0;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  font-weight: 400;
   color: ${({ theme }) => theme.colors.textMuted};
-  line-height: 1.45;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 `;
 
 function toWhatsAppUrl(value = '') {
@@ -173,19 +240,27 @@ function openMail(event, address) {
 export default function MemberCard({ professional }) {
   const { t } = useTranslation();
   const p = t.profile;
+  const { data: taxonomyCategories = [] } = useProfessionalCategories();
+
+  const resolved = useMemo(
+    () => withResolvedCategories(professional, taxonomyCategories),
+    [professional, taxonomyCategories],
+  );
+
   const {
     id,
     name,
-    category,
     location,
     featuredImage,
-    description,
     email,
     phone,
     whatsapp,
-  } = professional;
+    isCertificateHolder,
+  } = resolved;
 
+  const categoryLabel = formatProfessionalCategories(resolved);
   const whatsappUrl = toWhatsAppUrl(whatsapp || phone);
+  const hasActions = isCertificateHolder || email || whatsappUrl;
 
   return (
     <Card to={`/professionals/${id}`} whileTap={{ scale: 0.99 }}>
@@ -200,41 +275,56 @@ export default function MemberCard({ professional }) {
       <Body>
         <TitleRow>
           <Name>{name}</Name>
-          {(email || whatsappUrl) && (
+          {hasActions && (
             <ContactIcons>
+              {isCertificateHolder && (
+                <IconTip>
+                  <CertSlot>
+                    <CertificateBadge label={p.certBadge} size="sm" showTooltip={false} />
+                  </CertSlot>
+                  <Tooltip className="card-tooltip" role="tooltip">
+                    {p.certBadge}
+                  </Tooltip>
+                </IconTip>
+              )}
               {email && (
-                <IconButton
-                  type="button"
-                  aria-label={p.email}
-                  title={email}
-                  onClick={(event) => openMail(event, email)}
-                >
-                  <SocialIcon name="email" />
-                </IconButton>
+                <IconTip>
+                  <IconButton
+                    type="button"
+                    aria-label={p.email}
+                    onClick={(event) => openMail(event, email)}
+                  >
+                    <SocialIcon name="email" />
+                  </IconButton>
+                  <Tooltip className="card-tooltip" role="tooltip">
+                    {p.email}
+                  </Tooltip>
+                </IconTip>
               )}
               {whatsappUrl && (
-                <IconButton
-                  type="button"
-                  aria-label={p.whatsapp}
-                  title={whatsapp || phone}
-                  onClick={(event) => openExternal(event, whatsappUrl)}
-                >
-                  <SocialIcon name="whatsapp" />
-                </IconButton>
+                <IconTip>
+                  <IconButton
+                    type="button"
+                    aria-label={p.whatsapp}
+                    onClick={(event) => openExternal(event, whatsappUrl)}
+                  >
+                    <SocialIcon name="whatsapp" />
+                  </IconButton>
+                  <Tooltip className="card-tooltip" role="tooltip">
+                    {p.whatsapp}
+                  </Tooltip>
+                </IconTip>
               )}
             </ContactIcons>
           )}
         </TitleRow>
 
-        {(category || location) && (
+        {(categoryLabel || location) && (
           <Meta>
-            {category && <Category>{category}</Category>}
-            {category && location && ' · '}
-            {location}
+            {categoryLabel && <Category>{categoryLabel}</Category>}
+            {location && <Location>{location}</Location>}
           </Meta>
         )}
-
-        {description && <Description>{truncate(description, 90)}</Description>}
       </Body>
     </Card>
   );
